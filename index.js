@@ -13,7 +13,8 @@ const sql = require("sqlite");
 sql.open("./db/data.sqlite");
 const talkedRecently = new Set();
 
-
+client.login(config.token);
+process.on('unhandledRejection', error => console.error(`Uncaught Promise Rejection:\n${error}`));
 
 async function reporterror(therror,content,discrim) {
     let botowner = await client.fetchUser(config.ownerID);

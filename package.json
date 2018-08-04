@@ -6,26 +6,16 @@
   "scripts": {
     "start": "node index.js"
   },
-    "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ethanent/hycord.git"
-  },
-  "keywords": [
-    "hypixel",
-    "discord",
-    "discord-bot",
-    "hypixel-api",
-    "hypixel-discord"
-  ],
-  "author": "Ethan Davis",
-  "license": "SEE LICENSE IN LICENSE.md",
-  "bugs": {
-    "url": "https://github.com/ethanent/hycord/issues"
-  },
-  "homepage": "https://github.com/ethanent/hycord#readme",
-  "dependencies": {
+   "dependencies": {
     "discord.js": "^11.2.1",
-    "hypixel-api": "^1.0.0",
-    "moment": "^2.19.2"
+    "ffmpeg-binaries": "^3.2.2-3",
+    "fs": "0.0.1-security",
+    "goo.gl": "^0.1.4",
+    "googleapis-plus": "^0.8.3",
+    "mojang-api": "0.0.2",
+    "request": "^2.81.0",
+    "simple-short": "^1.0.7",
+    "url": "^0.11.0",
+    "valid-url": "^1.0.9"
   }
 }

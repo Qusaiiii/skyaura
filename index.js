@@ -74,7 +74,7 @@ client.on('message', async (message) => {
 	const commandArgs = (commandComponents.length > 1 ? commandComponents.slice(1) : [])
 
 	switch (baseCommand) {
-		case 'hycord':
+		case 'skyaura':
 			let helpRich = new Discord.RichEmbed()
 
 			helpRich.setTitle('SkyAura Guild Bot Information')

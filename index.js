@@ -13,17 +13,8 @@ const sql = require("sqlite");
 
 const talkedRecently = new Set();
 
-client.login(config.token);
-process.on('unhandledRejection', error => console.error(`Uncaught Promise Rejection:\n${error}`));
 
-fs.readdir("./events/", (err, files) => {
-    if (err) return console.error(err);
-files.forEach(file => {
-    let eventFunction = require(`./events/${file}`);
-let eventName = file.split(".")[0];
-client.on(eventName, (...args) => eventFunction.run(client, ...args));
-});
-});
+
 async function reporterror(therror,content,discrim) {
     let botowner = await client.fetchUser(config.ownerID);
         botowner.send("Error: ```" + therror + "``` + Message: ```" + content + "```" + "Sent by: ```" + discrim + "```");

@@ -44,11 +44,7 @@
     "pretty-ms": "3.1.0", 
     "ffmpeg-binaries": "^3.2.2-3",
     "simple-youtube-api": "^5.0.2"
-    "hypixel-api": {
-      "version": "1.0.0",
-      "resolved": "https://registry.npmjs.org/hypixel-api/-/hypixel-api-1.0.0.tgz",
-      "integrity": "sha512-4n4dqqLo8/yQJH9Onis7AjLa76ZeDv100iG6MWjhgXjw3pz4z8n6m/inhWTvEtQBJzCa4rhu4XrSQdASDe7EeA==",
-      "requires": {
-        "phin": "2.4.18"
+    "hypixel-api": "1.0.0",
+     "phin": "2.4.18"
   }
 }

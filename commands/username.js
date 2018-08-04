@@ -22,7 +22,7 @@ exports.run = (client, message, args) => {
     } else {
     if (!uuid) {
         sql.get(`SELECT * FROM hypixel WHERE discordid ="${message.author.id}"`).then(row => {
-            if (!row) return message.reply("If you want to pull your own stats by not supplying a uuid, you need to link your discord! `!hypixelverify`, otherwise, supply a UUID");
+            if (!row) return message.reply("If you want to pull your own stats by not supplying a uuid, you need to link your discord! `!skyauraverify`, otherwise, supply a UUID");
             uuid = row.uuid;
             MojangAPI.profile(uuid, function(err, res) {
                 if (err)

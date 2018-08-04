@@ -77,7 +77,7 @@ client.on('message', async (message) => {
 		case 'skyaura':
 			let helpRich = new Discord.RichEmbed()
 
-			helpRich.setTitle('Hycord Bot Information')
+			helpRich.setTitle('SkyAura v0.1 Information')
 
 			helpRich.setDescription('SkyAura was created by ImRoyal_Raddar [ethanent](https://ethanent.me)! Using the bot is simple!')
 

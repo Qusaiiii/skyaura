@@ -17,7 +17,7 @@ if (message.mentions.users.first()) {
     else {
 if(username === undefined) {
     sql.get(`SELECT * FROM hypixel WHERE discordid ="${message.author.id}"`).then(row => {
-        if (!row) return message.reply("To pull your own stats you must use `!hypixelverify`, otherwise please input a username.");
+        if (!row) return message.reply("To pull your own stats you must use `!skyauraverify`, otherwise please input a username.");
         uuid = row.uuid;
         console.log(`On ${date} ${message.author.tag}'s UUID was ${uuid}`);
         message.channel.send(`On ${date} ${message.author.tag}'s UUID was ${uuid}`);

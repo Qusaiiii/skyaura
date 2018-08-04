@@ -10,7 +10,7 @@ const snekfetch = require('snekfetch');
 const url = require('url');
 const statistics = require('./statistics.js');
 const sql = require("sqlite");
-
+sql.open("./db/data.sqlite");
 const talkedRecently = new Set();
 
 

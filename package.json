@@ -24,7 +24,7 @@
     "node-opus": "^0.2.7",
     "opusscript": "^0.0.6",
     "hypixel-api": "^1.0.0",
-    "moment": "^2.19.2"
+    "moment": "^2.19.2",
     "sqlite": "^2.9.2"
   }
 }

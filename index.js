@@ -87,7 +87,7 @@ client.on('message', async (message) => {
 
 			helpRich.addField('!guild <name>', 'Displays statistics for a Hypixel guild.')
 
-			helpRich.setFooter('Hycord Bot | Created by ethanent', 'https://i.imgur.com/hFbNBr5.jpg')
+			helpRich.setFooter('SkyAura v0.1 | Created by ethanent', 'https://i.imgur.com/hFbNBr5.jpg')
 
 			message.channel.send(helpRich)
 			break

@@ -87,7 +87,7 @@ client.on('message', async (message) => {
 
 			helpRich.addField('!guild <name>', 'Displays statistics for a Hypixel guild.')
 
-			helpRich.setFooter('SkyAura v0.1 | Created by ethanent', 'https://i.imgur.com/hFbNBr5.jpg')
+			helpRich.setFooter('SkyAura v0.1 | Created by ImRoyal_Raddar', 'https://i.imgur.com/hFbNBr5.jpg')
 
 			message.channel.send(helpRich)
 			break
@@ -117,7 +117,7 @@ client.on('message', async (message) => {
 				playerRich.setThumbnail('https://crafatar.com/avatars/' + (hypixelPlayer.uuid || '') + '?size=100')
 				playerRich.setTitle('Hypixel Player: ' + hypixelPlayer.displayname)
 				playerRich.setURL('https://hypixel.net/player/' + hypixelPlayer.displayname + '/')
-				playerRich.setFooter('SkyAura v0.1 | Created by ethanent', 'https://i.imgur.com/hFbNBr5.jpg')
+				playerRich.setFooter('SkyAura v0.1 | Created by ImRoyal_Raddar', 'https://i.imgur.com/hFbNBr5.jpg')
 				playerRich.setColor('#30DB09')
 
 				playerRich.addField('Rank', (hypixelPlayer.rank || hypixelPlayer.packageRank || hypixelPlayer.newPackageRank || 'None').toString().replace(/_/g, ' '), true)
@@ -161,7 +161,7 @@ client.on('message', async (message) => {
 
 				guildRich.setThumbnail('https://hypixel.net/data/guild_banners/100x200/' + guildData._id + '.png')
 				guildRich.setTitle('Hypixel Guild: ' + guildData.name + ' [' + guildData.tag + ']')
-				guildRich.setFooter('SkyAura v0.1 | Created by ethanent', 'https://i.imgur.com/hFbNBr5.jpg')
+				guildRich.setFooter('SkyAura v0.1 | Created by ImRoyal_Raddar', 'https://i.imgur.com/hFbNBr5.jpg')
 				guildRich.setColor('#2DC7A1')
 				guildRich.setURL('https://hypixel.net/guilds/' + guildData._id + '/')
 

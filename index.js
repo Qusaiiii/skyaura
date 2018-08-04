@@ -5,7 +5,6 @@ const moment = require('moment')
 
 const args = process.argv.slice(2)
 
-if (args.length < 2) {
 	
 }
 
@@ -176,7 +175,7 @@ client.on('message', async (message) => {
 			break
 	}
 })
-exports.name = "8ball"
+exports.name = "!8ball"
 exports.aliases = ["eightball"]
 exports.level = 0; 
 

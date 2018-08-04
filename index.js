@@ -1,5 +1,4 @@
 
-const client = new Discord.Client();
 const Discord = require('discord.js')
 const HypixelAPI = require('hypixel-api')
 const moment = require('moment')

@@ -79,7 +79,7 @@ client.on('message', async (message) => {
 
 			helpRich.setTitle('Hycord Bot Information')
 
-			helpRich.setDescription('Hycord was created by [ethanent](https://ethanent.me)! Using the bot is simple!')
+			helpRich.setDescription('SkyAura was created by ImRoyal_Raddar [ethanent](https://ethanent.me)! Using the bot is simple!')
 
 			helpRich.setColor('#FFE11A')
 

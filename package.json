@@ -16,7 +16,7 @@
     "request": "^2.81.0",
     "simple-short": "^1.0.7",
     "url": "^0.11.0",
-    "valid-url": "^1.0.9"
+    "valid-url": "^1.0.9",
     "sqlite": "^2.9.1"
   }
 }

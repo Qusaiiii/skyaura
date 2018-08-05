@@ -9,7 +9,6 @@ const args = process.argv.slice(2)
 }
 
 
-const moment = require("moment");
 require("moment-duration-format");
 
 exports.run = (client, message, args, level) => { // eslint-disable-line no-unused-vars

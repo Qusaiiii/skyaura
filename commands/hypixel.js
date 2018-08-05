@@ -85,7 +85,7 @@ exports.run = (client, message, args) => {
                     MojangAPI.uuidAt(username, date, (err, res) => {
                         if (err) {
                             console.log(err);
-                            message.channel.send("There was an error, or that account/UIID doesn't exist! Try `!skyaura help`!");
+                            message.channel.send("There was an error, or that account/UIID doesn't exist! Try `!hypixel help`!");
                         } else {
                             uuid = res.id;
                         }
@@ -111,11 +111,11 @@ exports.run = (client, message, args) => {
                     return;
                 }
             } else {
-                message.channel.send("There was some sort of error. Sorry! Try `!skyaura help`!")
+                message.channel.send("There was some sort of error. Sorry! Try `!hypixel help`!")
             }
         } else {
             console.error("Error: " + e.toString());
-            message.channel.send("There was some sort of error. Sorry! Try `!skyaura help`!")
+            message.channel.send("There was some sort of error. Sorry! Try `!hypixel help`!")
         }
     }
     function BOROP(e, res, data) {
@@ -124,7 +124,7 @@ exports.run = (client, message, args) => {
             if (res && res.statusCode === 200) {
                 let parseddata = JSON.parse(data);
                 if(!parseddata) {
-                    message.channel.send("This user has no stats! Try `!skyaura help`!");
+                    message.channel.send("This user has no stats! Try `!hypixel help`!");
                 } else {
                     switch (game) {
                         case "bedwars":
@@ -136,7 +136,7 @@ exports.run = (client, message, args) => {
                                 statisticallogging(uuid,parseddata.player.achievements.bedwars_level,kdratio,wlratio);
                             }
                             catch(err) {
-                                message.channel.send("This player has no BedWars stats! Try `!skyaura help`!");
+                                message.channel.send("This player has no BedWars stats! Try `!hypixel help`!");
                                 console.log(err)
                             }
                         break;
@@ -148,7 +148,7 @@ exports.run = (client, message, args) => {
                                 statistics.profile(parseddata,message,uuid,oldembed);
                             }
                             catch(err) {
-                                message.channel.send("This player has no profile! Try `!skyaura help`!");
+                                message.channel.send("This player has no profile! Try `!hypixel help`!");
                                 console.log(err)
                             }
                         break;
@@ -159,7 +159,7 @@ exports.run = (client, message, args) => {
                                 statistics.skywars(parseddata,message,uuid,oldembed);
                             }
                             catch(err) {
-                                message.channel.send("This player has no SkyWars stats! Try `!skyaura help`!");
+                                message.channel.send("This player has no SkyWars stats! Try `!hypixel help`!");
                                 console.log(err);
                             }
                         break;
@@ -170,7 +170,7 @@ exports.run = (client, message, args) => {
                                 statistics.hungergames(parseddata,message,uuid,oldembed);
                             }
                             catch(err) {
-                                message.channel.send("This player has no Blitz Survival Games stats! Try `!skyaura help`!");
+                                message.channel.send("This player has no Blitz Survival Games stats! Try `!hypixel help`!");
                                 console.log(err);
                             }
                         break;
@@ -181,7 +181,7 @@ exports.run = (client, message, args) => {
                                 statistics.uhc(parseddata,message,uuid,oldembed);
                             }
                             catch(err) {
-                                message.channel.send("This player has no UHCC stats! Try `!skyaura help`!");
+                                message.channel.send("This player has no UHCC stats! Try `!hypixel help`!");
                                 console.log(err);
                             }
                         break;
@@ -192,7 +192,7 @@ exports.run = (client, message, args) => {
                                 statistics.skyclash(parseddata,message,uuid,oldembed);
                             }
                             catch(err) {
-                                message.channel.send("This player has no SkyClash stats! Try `!skyaura help`!");
+                                message.channel.send("This player has no SkyClash stats! Try `!hypixel help`!");
                                 console.log(err);
                             }
                         break;
@@ -203,7 +203,7 @@ exports.run = (client, message, args) => {
                                 statistics.megawalls(parseddata,message,uuid,oldembed);
                             }
                             catch(err) {
-                                message.channel.send("This player has no MegaWalls stats! Try `!skyaura help`!");
+                                message.channel.send("This player has no MegaWalls stats! Try `!hypixel help`!");
                                 console.log(err);
                             }
                         break;
@@ -214,7 +214,7 @@ exports.run = (client, message, args) => {
                                 statistics.smashheroes(parseddata,message,uuid,oldembed);
                             }
                             catch(err) {
-                                message.channel.send("This player has no Smash Heroes stats! Try `!skyaura help`!");
+                                message.channel.send("This player has no Smash Heroes stats! Try `!hypixel help`!");
                                 console.log(err);
                             }
                         break;
@@ -225,7 +225,7 @@ exports.run = (client, message, args) => {
                                 statistics.murdermystery(parseddata,message,uuid,oldembed);
                             }
                             catch(err) {
-                                message.channel.send("This player has no MurderMystery stats! Try `!skyaura help`!");
+                                message.channel.send("This player has no MurderMystery stats! Try `!hypixel help`!");
                                 console.log(err);
                             }
                         break;
@@ -237,7 +237,7 @@ exports.run = (client, message, args) => {
                                 statistics.warlords(parseddata,message,uuid,oldembed);
                             }
                             catch(err) {
-                                message.channel.send("This player has no Warlords stats! Try `!skyaura help`!");
+                                message.channel.send("This player has no Warlords stats! Try `!hypixel help`!");
                                 console.log(err);
                             }
                         break;
@@ -250,7 +250,7 @@ exports.run = (client, message, args) => {
                                 statistics.quakecraft(parseddata,message,uuid,oldembed);
                             }
                             catch(err) {
-                                message.channel.send("This player has no QuakeCraft stats! Try `!skyaura help`!");
+                                message.channel.send("This player has no QuakeCraft stats! Try `!hypixel help`!");
                                 console.log(err);
                             }
                         break;
@@ -260,7 +260,7 @@ exports.run = (client, message, args) => {
                                 statistics.duels(parseddata,message,uuid,oldembed);
                             }
                             catch(err) {
-                                message.channel.send("This player has no Duels stats! Try `!skyaura help`!");
+                                message.channel.send("This player has no Duels stats! Try `!hypixel help`!");
                                 console.log(err);
                             }
                         break;
@@ -273,18 +273,18 @@ exports.run = (client, message, args) => {
                                 statistics.buildbattle(parseddata,message,uuid,oldembed);
                             }
                             catch(err) {
-                                message.channel.send("This player has no Build Battle stats! Try `!skyaura help`!");
+                                message.channel.send("This player has no Build Battle stats! Try `!hypixel help`!");
                                 console.log(err);
                             }
                         break;
                     }
                 }
             } else {
-                message.channel.send("There was some sort of error. Sorry! Try `!skyaura help`!")
+                message.channel.send("There was some sort of error. Sorry! Try `!hypixel help`!")
             }
         } else {
             console.error("Error: " + e.toString());
-            message.channel.send("There was some sort of error. Sorry! Try `!skyaura help`!")
+            message.channel.send("There was some sort of error. Sorry! Try `!hypixel help`!")
         }
     });
     }
@@ -329,18 +329,18 @@ exports.run = (client, message, args) => {
             }
              if (!args[1] && args[0]) {
                 sql.get(`SELECT * FROM hypixel WHERE discordid ="${message.author.id}"`).then(row => {
-                  if (!row || !row.uuid) return message.reply("If you want to pull your own stats by not supplying a user, you need to link your discord! `!skyauraverify`");
+                  if (!row || !row.uuid) return message.reply("If you want to pull your own stats by not supplying a user, you need to link your discord! `!hypixelverify`");
                   uuid = row.uuid;
                   guildorstats(game,username,uuid);
                   console.log("This hypixel command lacked a username argument. Attempting to pull stats for " + message.author.id);
                 });
             } else {
-                message.channel.send("Try it like this! `!hypixel [gametype] [username]` :) Or try `!skyaura help`!");
+                message.channel.send("Try it like this! `!hypixel [gametype] [username]` :) Or try `!hypixel help`!");
             }
         } else {
             if (message.mentions.users.first()) {
                 sql.get(`SELECT * FROM hypixel WHERE discordid ="${message.mentions.users.first().id}"`).then(row => {
-                    if (!row || !row.uuid) return message.reply("This user has not linked their Minecraft account! Try `!skyaura help`!");
+                    if (!row || !row.uuid) return message.reply("This user has not linked their Minecraft account! Try `!hypixel help`!");
                     uuid = row.uuid;
                     guildorstats(game,username,uuid);
                     console.log("This was command used a discord mention");
@@ -350,7 +350,7 @@ exports.run = (client, message, args) => {
                 MojangAPI.uuidAt(username, date, (err, res) => {
                     if (err) {
                         console.log(err);
-                        message.channel.send("There was an error, or that account/UIID doesn't exist! Try `!skyaura help`!");
+                        message.channel.send("There was an error, or that account/UIID doesn't exist! Try `!hypixel help`!");
                     } else {
                         uuid = res.id;
                         guildorstats(game,username,uuid);

@@ -15,7 +15,7 @@ exports.run = (client, message, args) => {
             }
         });
 } else {
-    message.channel.send("You do not have permission to do this! You need to be ImRoyal_Raddar, or one of his close friends :)")
+    message.channel.send("You do not have permission to do this! You need to be MrMcShroom, or one of his close friends :)")
 }
     } catch(e) {
         console.log(e);

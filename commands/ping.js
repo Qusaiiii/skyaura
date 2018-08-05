@@ -1,4 +1,18 @@
-// JavaScript source code
-exports.run = (client, message, args) => {
-    message.channel.send("Pong! The ping is **" + client.ping.toFixed(0) + '**ms! :ping_pong:').catch(console.error);
-}
+exports.run = async (client, message, args, level) => { // eslint-disable-line no-unused-vars
+  const msg = await message.channel.send("Ping?");
+  msg.edit(`Pong! Latency is ${msg.createdTimestamp - message.createdTimestamp}ms. API Latency is ${Math.round(client.ping)}ms`);
+};
+
+exports.conf = {
+  enabled: true,
+  guildOnly: false,
+  aliases: [],
+  permLevel: "Mortal"
+};
+
+exports.help = {
+  name: "ping",
+  category: "Miscelaneous",
+  description: "It... like... pings. Then Pongs. And it\"s not Ping Pong.",
+  usage: "ping"
+};

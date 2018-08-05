@@ -8,9 +8,7 @@ const args = process.argv.slice(2)
 	
 }
 
-const {
-  version
-}  = require("discord.js");
+
 const moment = require("moment");
 require("moment-duration-format");
 
@@ -23,7 +21,7 @@ exports.run = (client, message, args, level) => { // eslint-disable-line no-unus
 • Servers    :: ${client.guilds.size.toLocaleString()}
 • Channels   :: ${client.channels.size.toLocaleString()}
 • SkyAura Bot     :: v0.1
-• Discord.js :: v${version}
+• Discord.js :: 1.11
 • Node       :: ${process.version}`, {
     code: "asciidoc"
   });

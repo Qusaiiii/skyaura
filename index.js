@@ -9,8 +9,6 @@ const args = process.argv.slice(2)
 }
 
 
-require("moment-duration-format");
-
 exports.run = (client, message, args, level) => { // eslint-disable-line no-unused-vars
   const duration = moment.duration(client.uptime).format(" D [days], H [hrs], m [mins], s [secs]");
   message.channel.send(`= STATISTICS =
@@ -22,7 +20,7 @@ exports.run = (client, message, args, level) => { // eslint-disable-line no-unus
 • SkyAura Bot     :: v0.1
 • Discord.js :: 1.11
 • Node       :: ${process.version}`, {
-    code: "asciidoc"
+    code: "ImRoyal_Raddar"
   });
 };
 

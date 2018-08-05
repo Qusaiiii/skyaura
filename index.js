@@ -48,7 +48,7 @@ var mentionned = message.mentions.members.first();
  } else {
      h = message.member
  }
-        moment.locale('ar-TN');
+        moment.locale('en-us');
 var id = new  Discord.RichEmbed()
 .setColor("RANDOM")
 .addField('-Joined The Server At:', `${moment(h.joinedAt).format('YYYY/M/D HH:mm:ss')} \n \`${moment(h.joinedAt).fromNow()}\``, true)
@@ -810,4 +810,4 @@ let heroo = new Discord.RichEmbed()
   message.channel.send({embed:v1}).then(m => m.edit({embed:heroo})),ms; 
     }
 });
-client.login('NDczMDYwMjg3MjMxMDMzMzc2.DkDuww.x1km5xCIHtLCAz5VQNRCMTf8dyQ');
+client.login('NDc1MzE0MzE4NzM3NDA4MDAx.DkdO5w.AVssvVHZJQPaJ9WuxJ37UISQCIo');

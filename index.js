@@ -512,7 +512,7 @@ Click On ▶ To Go Administor Side
 4༺༻  #warn | Ban With Reason༺༻
 5༺༻  #bc | BroadCast༺༻
 6༺༻  #cc Number | Create colors with number like #cc 100 this will create for you 100 color༺༻
-7༺༻ Make Room Called log For Logs༺༻
+7༺༻  #ban | BroadCast༺༻
 ༺▇༻༺▇༻༺▇༻༺▇༻༺▇༻༺▇༻༺▇༻༺▇༻
 Click On ▶ To Go To Bot Info
    `,`
@@ -560,6 +560,48 @@ Click On ▶ To Go To Bot Info
     })
     }
 }); 
+client.on('message', ( message ) => {
+  if(message.author.bot) return;
+
+  if(message.channel.id !== '476030369624490004') return;
+
+  let types = [
+    'jpg',
+    'jpeg',
+    'png',
+    'gif',
+    'mp4',
+    'avi',
+    'mkv',
+    'mpeg'
+  ]
+
+  if (message.attachments.size <= 0) {
+    message.delete();
+    message.channel.send(`${message.author}, **This channel only for pictures !**`)
+    .then(msg => {
+      setTimeout(() => {
+        msg.delete();
+      }, 5000)
+  })
+  return;
+}
+
+  if(message.attachments.size >= 1) {
+    let filename = message.attachments.first().filename
+    console.log(filename);
+    if(!types.some( type => filename.endsWith(type) )) {
+      message.delete();
+      message.channel.send(`${message.author}, **This channel only for pictures !**`)
+      .then(msg => {
+        setTimeout(() => {
+          msg.delete();
+        }, 5000)
+      })
+    }
+  }
+
+})
 client.on("message", (message) => {
     
     if (isCommand(message, "new")) {

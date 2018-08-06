@@ -810,4 +810,67 @@ let heroo = new Discord.RichEmbed()
   message.channel.send({embed:v1}).then(m => m.edit({embed:heroo})),ms; 
     }
 });
+client.on("message", function(message){
+if (message.content.startsWith(prefix + "rank")) {
+    if (!EpicEdiTeD[message.author.id]) {
+        EpicEdiTeD[message.author.id] = {Money:0,Xp:0,Level:0}
+    }
+     var mentionned = message.mentions.users.first();
+ 
+      var epic;
+      if(mentionned){
+          var epic = mentionned;
+      } else {
+          var epic = message.author;
+ 
+      }
+ 
+   
+    var CulLevel = Math.floor(0.25 * Math.sqrt(EpicEdiTeD[message.author.id].Xp +1));
+    if (CulLevel > EpicEdiTeD[message.author.id].Level) {EpicEdiTeD[message.author.id].Level +=CulLevel}
+    let edited = new Discord.RichEmbed()
+    .setColor("Random")
+    .addField("UserName :", message.author.tag)
+    .addField("Level :", EpicEdiTeD[message.author.id].Level)
+    .addField("XP :",Math.floor(EpicEdiTeD[message.author.id].Xp))
+    message.channel.send(edited);
+}
+if (!EpicEdiTeD[message.author.id]) {
+    EpicEdiTeD[message.author.id] = {Money:0,Xp:0,Level:0,Like:0}
+    }
+ 
+EpicEdiTeD[message.author.id].Xp+= 0.25;
+EpicEdiTeD[message.author.id].Money+= 0.25;
+ 
+});
+client.on('message',async message => {
+var codes = "#";
+var args = message.content.split(" ").slice(1);
+var title = args[1]
+          if(message.content.startsWith(codes + "giveaway")) {
+              if(!message.guild.member(message.author).hasPermission('MANAGE_GUILD')) return message.channel.send(':heavy_multiplication_x:| **s You Dont Have Premission**');
+              if(!args) return message.channel.send(`**Use : #giveaway  <Time> <Presentse>**`);
+              if(!title) return message.channel.send(`**Use : **\`#giveaway ${args[0]} Minutes\`** <Presentse>**`);
+         if(!isNaN(args)) return message.channel.send(':heavy_multiplication_x:| **The Time Be Nambers `` Do the Commend Agin``**');
+                           let giveEmbed = new Discord.RichEmbed()
+                  .setAuthor(message.guild.name, message.guild.iconURL)
+                  .setDescription(`**${title}** \nReact Whit 🎉 To Enter! \n**Time remaining: Minutes :${duration / 60000}**`)
+                  .setFooter(message.author.username, message.author.avatarURL);
+
+                  message.channel.send(' :heavy_check_mark: **Giveaway Created** :heavy_check_mark:' , {embed: giveEmbed}).then(m => {
+                      message.delete();
+                      m.react('🎉');
+                     setTimeout(() => {
+                       let users = m.reactions.get("🎉").users;
+                       let list = users.array().filter(u => u.id !== client.user.id);
+                       let gFilter = list[Math.floor(Math.random() * list.length) + 0]
+                       let endEmbed = new Discord.RichEmbed()
+                       .setAuthor(message.author.username, message.author.avatarURL)
+                       .setTitle(title)
+                       .addField('Giveaway End !🎉',`Winners : ${gFilter}`)
+                     m.edit('** 🎉 GIVEAWAY ENDED 🎉**' , {embed: endEmbed});
+                     },args * 60000);
+                   });
+          }
+});
 client.login('NDc1MzE0MzE4NzM3NDA4MDAx.DkdO5w.AVssvVHZJQPaJ9WuxJ37UISQCIo');

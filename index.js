@@ -119,7 +119,33 @@ client.on('message', message => {
     }
 });
 
+  client.on('message', message => {
+  if (message.author.codes) return;
+  if (!message.content.startsWith(prefix)) return;
+
+  let command = message.content.split(" ")[0];
+  command = command.slice(prefix.length);
+
+  let args = message.content.split(" ").slice(1);
+
+  if (command == "ban") {
+               if(!message.channel.guild) return message.reply('** This command only for servers**');
+         
+  if(!message.guild.member(message.author).hasPermission("BAN_MEMBERS")) return message.reply("**انت لا تملك الصلاحيات المطلوبه**");
+  if(!message.guild.member(client.user).hasPermission("BAN_MEMBERS")) return message.reply("**I Don't Have ` BAN_MEMBERS ` Permission**");
+  let user = message.mentions.users.first();
   
+  if (message.mentions.users.size < 1) return message.reply("**منشن شخص**");
+  if (!message.guild.member(user)
+  .bannable) return message.reply("**يجب ان تكون رتبة البوت اعلي من رتبه الشخص المراد تبنيدة**");
+
+
+  message.guild.member(user).ban(7, user);
+
+message.channel.send(`**:white_check_mark: ${user.tag} banned from the server ! :airplane: **  `)
+
+}
+});
 
  client.on('message', message => {
     if (message.content.startsWith("#id")) {
@@ -473,6 +499,7 @@ if (message.content.startsWith('#help')) { /// This is The DMS Code Send The Hel
 10༺༻  #كت تويت | Cut-Tweet༺༻
 10༺༻ #Discrim | Discrim༺༻
 11༺༻ #id | ID༺༻
+12༺༻ #invites | see your Invites༺༻
 ༺▇༻༺▇༻༺▇༻༺▇༻༺▇༻༺▇༻༺▇༻༺▇༻
 Click On ▶ To Go Administor Side
    `
@@ -635,7 +662,7 @@ client.on('message', async message => {
        .addField('- وقت الحظر:',time,true)
        .setFooter(message.author.tag,message.author.avatarURL);
        User.sendMessage({embed: banEmbed}).then(() => message.guild.member(User).ban({reason: Reason}))
-       .then(() => message.channel.send(`**# Done! I banned: ${User}**`)).then(() => { setTimeout(() => {
+       .then(() => message.channel.send(`**:white_check_mark: ${User} banned from the server ! :airplane: **`)).then(() => { setTimeout(() => {
            message.guild.unban(User);
        }, mmss(time));
     });
@@ -1071,7 +1098,7 @@ if(tomute.hasPermission("MANAGE_MESSAGES"))return      message.channel.send('**�
     if(!mutetime) return message.reply("**يرجى تحديد وقت الميوت**:x:");
   
     await(tomute.addRole(muterole.id));
-    message.reply(`<@${tomute.id}> تم اعطائه ميوت ومدة الميوت : ${ms(ms(mutetime))}`);
+    message.reply(`**:white_check_mark: <@${tomute.id}> Was Muted :zipper_mouth:**`);
 setTimeout(function(){
       tomute.removeRole(muterole.id);
       message.channel.send(`<@${tomute.id}> **انقضى الوقت وتم فك الميوت عن الشخص**:white_check_mark: `);
@@ -1092,7 +1119,7 @@ if(!message.guild.member(client.user).hasPermission("MANAGE_ROLES")) return mess
   if(!role || !toMute.roles.has(role.id)) return message.channel.sendMessage("**لم يتم اعطاء هذه شخص ميوت من الأساس**:x:")
 
   await toMute.removeRole(role)
-  message.channel.sendMessage("**لقد تم فك الميوت عن شخص بنجاح**:white_check_mark:");
+  message.channel.sendMessage("**:white_check_mark: User Was UnMuted :zipper_mouth: **");
 
   return;
 
@@ -1199,7 +1226,7 @@ let heroo = new Discord.RichEmbed()
 .addField("MyID :","**[ "+client.user.id+" ]**",true)
 .addField("RamUsage :",`**[ ${(process.memoryUsage().rss / 1048576).toFixed()}MB ]**`,true)
 .addField("UpTime :",`**[** **Days:** \`${days}\` **Hours:** \`${hours}\` **Minutes:** \`${minutes}\` **Seconds:** \`${seconds}\` **]**`,true)
-.setFooter("Zorex | v0.1 |")
+.setFooter("Zorex | v0.1")
   message.channel.send({embed:v1}).then(m => m.edit({embed:heroo})),ms; 
     }
 });

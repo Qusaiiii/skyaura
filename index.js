@@ -11,30 +11,13 @@ const fetchVideoInfo = require('youtube-info');
 const YouTube = require('simple-youtube-api');
 const youtube = new YouTube("AIzaSyAdORXg7UZUo7sePv97JyoDqtQVi3Ll0b8");
 const queue = new Map();
-
-client.on('message', message => {
-    if (message.content.startsWith("#avatar")) {
-        var mentionned = message.mentions.users.first();
-    var x5bzm;
-      if(mentionned){
-          var x5bzm = mentionned;
-      } else {
-          var x5bzm = message.author;
-          
-      }
-        const embed = new Discord.RichEmbed()
-        .setColor("RANDOM")
-        .setImage(`${x5bzm.avatarURL}`)
-      message.channel.sendEmbed(embed);
-    }
-});
 client.on("ready", () => {
 
     var guild;
 
     while (!guild)
 
-        guild = client.guilds.get("اي دي سيرفرك - Server id");
+        guild = client.guilds.get("475990755245293568");
 
     guild.fetchInvites().then((data) => {
 
@@ -105,6 +88,23 @@ client.on("guildMemberAdd", (member) => {
     });
 
 });
+client.on('message', message => {
+    if (message.content.startsWith("#avatar")) {
+        var mentionned = message.mentions.users.first();
+    var x5bzm;
+      if(mentionned){
+          var x5bzm = mentionned;
+      } else {
+          var x5bzm = message.author;
+          
+      }
+        const embed = new Discord.RichEmbed()
+        .setColor("RANDOM")
+        .setImage(`${x5bzm.avatarURL}`)
+      message.channel.sendEmbed(embed);
+    }
+});
+
   
 client.on('message',async message => {
 var codes = "#";

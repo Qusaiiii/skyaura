@@ -12469,4 +12469,4 @@ message.member.addRole(message.guild.roles.find("name", "100"));
 });
   
 client.login('NDc2MDA4OTI5MzExMzI2MjA5.DknXIw.QxwGHc-6iDoMB1If6zUGIIgXk8Q');
-	
+	});

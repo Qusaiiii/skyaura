@@ -810,6 +810,7 @@ let heroo = new Discord.RichEmbed()
   message.channel.send({embed:v1}).then(m => m.edit({embed:heroo})),ms; 
     }
 });
+var EpicEdiTeD = {};
 client.on("message", function(message){
 if (message.content.startsWith(prefix + "rank")) {
     if (![message.author.id]) {

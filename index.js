@@ -137,16 +137,16 @@ client.on('message', message => {
       }
   embed.setAuthor(message.guild.name, message.guild.iconURL ? message.guild.iconURL : client.user.displayAvatarURL)
   .setThumbnail(message.guild.iconURL ? message.guild.iconURL : me.user.displayAvatarURL)
-  .addField("Created", `${message.guild.createdAt.toString().substr(0, 15)},\n${checkDays(message.guild.createdAt)}`, true)
-  .addField("ID", message.guild.id, true)
-  .addField("Owner", `${message.guild.owner.user.username}#${message.guild.owner.user.discriminator}`, true)
-  .addField("Region", region[message.guild.region], true)
-  .addField("Members", message.guild.memberCount, true)
-  .addField("Roles", message.guild.roles.size, true)
-  .addField("Channels", message.guild.channels.size, true)
-  .addField("Emojis", emojis, true)
-  .addField("Verification Level", verifLevels[message.guild.verificationLevel], true)
-  .addField("Default Channel", message.guild.defaultChannel, true)
+  .addField("• Created", `${message.guild.createdAt.toString().substr(0, 15)},\n${checkDays(message.guild.createdAt)}`, true)
+  .addField("• ID", message.guild.id, true)
+  .addField("• Owner", `${message.guild.owner.user.username}#${message.guild.owner.user.discriminator}`, true)
+  .addField("• Region", region[message.guild.region], true)
+  .addField("• Members", message.guild.memberCount, true)
+  .addField("• Roles", message.guild.roles.size, true)
+  .addField("• Channels", message.guild.channels.size, true)
+  .addField("• Emojis", emojis, true)
+  .addField("• Verification Level", verifLevels[message.guild.verificationLevel], true)
+  .addField("• Default Channel", message.guild.defaultChannel, true)
   .setColor(3447003)
   message.channel.send({embed});
   }
@@ -550,6 +550,7 @@ if (message.content.startsWith('#help')) { /// This is The DMS Code Send The Hel
 10༺༻ #Discrim | Discrim༺༻
 11༺༻ #id | ID༺༻
 12༺༻ #invites | see your Invites༺༻
+12༺༻ #server | see Server Info༺༻
 ༺▇༻༺▇༻༺▇༻༺▇༻༺▇༻༺▇༻༺▇༻༺▇༻
 Click On ▶ To Go Administor Side
    `

@@ -119,8 +119,9 @@ client.on('message', message => {
         return msg.channel.send(`:no_entry_sign: **Error:**\n${e}`);
     });
     msg.channel.send(`<:check:${settings.check}> **${msg.author.username}**, I've added the **${name}** role from **${msg.mentions.users.first().username}**.`);
- }
-});
+  });
+		});
+  }
 client.on('message', message => {
     if (message.content.startsWith("#avatar")) {
         var mentionned = message.mentions.users.first();

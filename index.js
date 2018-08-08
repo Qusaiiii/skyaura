@@ -86,6 +86,58 @@ client.on("guildMemberAdd", (member) => {
     });
 
 });
+const STATES = {true: '<:check:314349398811475968> Enabled', false: '<:xmark:314349398824058880> Disabled'};
+
+exports.loadAsSubcommands = true;
+exports.commands = [
+    'enable',
+    'disable',
+    'fake',
+    'kick',
+    'ban'
+];
+
+exports.main = {
+    desc: 'Edit invite settings for the bot.',
+    usage: '[enabled | disable | fake <enable|disable> | kick <number> | ban <number>]',
+    aliases: ['ads', 'antiads', 'antiinvites'],
+    permissions: {author: 'manageGuild'},
+    async main(bot, ctx) {
+        let embed = {
+            title: 'Server Settings - Invites',
+            description: `Showing current invite settings for **${ctx.guild.name}**.`,
+            fields: [
+                {
+                    name: '`Status`',
+                    value: `**${STATES[ctx.settings.invites.enabled]}**\n`
+                    + 'Key: `enable|disable`',
+                    inline: true
+                },
+                {
+                    name: '`Block Fake Invites?`',
+                    value: `**${STATES[ctx.settings.invites.fake]}**\n`
+                    + 'Key: `fake <enable|disable>`',
+                    inline: true
+                },
+                {
+                    name: '`Kick At`',
+                    value: `**${ctx.settings.actions.invites.kick === 0 ? '0 (disabled)' : ctx.settings.actions.invites.kick}** offences.\n`
+                    + 'Key `kick <number>`',
+                    inline: true
+                },
+                {
+                    name: '`Ban At`',
+                    value: `**${ctx.settings.actions.invites.ban === 0 ? '0 (disabled)' : ctx.settings.actions.invites.ban}** offences.\n`
+                    + 'Key `ban <number>`',
+                    inline: true
+                }
+            ]
+        };
+
+        await ctx.createMessage({embed});
+    }
+};
+
 
 client.on('message', message => {
    if(message.content.startsWith(prefix + "invites")) {
@@ -102,7 +154,17 @@ client.on('message', message => {
 });
   }
 });
+exports.commands = ['ping'];
 
+exports.ping = {
+    desc: 'Ping!',
+    allowDM: true,
+    main(bot, ctx) {
+        return ctx.createMessage('IT BURNS').then(m => {
+            return m.edit(`Cut through the message in \`${m.timestamp - ctx.timestamp}ms\``);
+        });
+    }
+};
 client.on('message', message => {
     if (message.content.startsWith("#avatar")) {
         var mentionned = message.mentions.users.first();

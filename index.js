@@ -103,25 +103,55 @@ client.on('message', message => {
 });
   }
 });
+function checkDays(date) {
+    let now = new Date();
+    let diff = now.getTime() - date.getTime();
+    let days = Math.floor(diff / 86400000);
+    return days + (days == 1 ? " day" : " days") + " ago";
+	};
 client.on('message', message => {
-    if (!msg.guild.member(client.user).hasPermission("MANAGE_ROLES_OR_PERMISSIONS")) return msg.reply(":no_entry_sign: **Error:** I don't have the **Manage Roles** permission!");
-    if (!msg.member.hasPermission("MANAGE_ROLES_OR_PERMISSIONS")) return msg.reply(":no_entry_sign: **Error:** You don't have the **Manage Roles** permission!");
-    if (msg.mentions.users.size === 0) return msg.reply(":no_entry_sign: Please mention a user to give the role to.\nExample: `;addrole @user Members`");
-    let member = msg.guild.member(msg.mentions.users.first());
-    if (!member) return msg.reply(":no_entry_sign: **Error:** That user does not seem valid.");
-    let name = msg.content.split(" ").splice(2).join(" ");
-    let role = msg.guild.roles.find("name", name);
-    if (!role) return msg.reply(`:no_entry_sign: **Error:** ${name} isn't a role on this server!`);
-    let botRolePosition = msg.guild.member(client.user).highestRole.position;
-    let rolePosition = role.position;
-    if (botRolePosition <= rolePosition) return msg.channel.send(":no_entry_sign: **Error:** Failed to add the role to the user because my highest role is lower than the specified role.");
-    member.addRole(role).catch(e => {
-        return msg.channel.send(`:no_entry_sign: **Error:**\n${e}`);
-    });
-    msg.channel.send(`<:check:${settings.check}> **${msg.author.username}**, I've added the **${name}** role from **${msg.mentions.users.first().username}**.`);
-  });
-		});
+	  const embed = new Discord.RichEmbed();
+	if (message.content.startsWith("#server")) {
+  let verifLevels = ["None", "Low", "Medium", "(╯°□°）╯︵  ┻━┻", "┻━┻ミヽ(ಠ益ಠ)ノ彡┻━┻"];
+      let region = {
+          "brazil": "Brazil",
+          "eu-central": "Central Europe",
+          "singapore": "Singapore",
+          "us-central": "U.S. Central",
+          "sydney": "Sydney",
+          "us-east": "U.S. East",
+          "us-south": "U.S. South",
+          "us-west": "U.S. West",
+          "eu-west": "Western Europe",
+          "vip-us-east": "VIP U.S. East",
+          "london": "London",
+          "amsterdam": "Amsterdam",
+          "hongkong": "Hong Kong"
+      };
+
+      var emojis;
+      if (message.guild.emojis.size === 0) {
+          emojis = 'None';
+      } else {
+          emojis = message.channel.guild.emojis.map(e => e).join(" ");
+      }
+  embed.setAuthor(message.guild.name, message.guild.iconURL ? message.guild.iconURL : client.user.displayAvatarURL)
+  .setThumbnail(message.guild.iconURL ? message.guild.iconURL : me.user.displayAvatarURL)
+  .addField("Created", `${message.guild.createdAt.toString().substr(0, 15)},\n${checkDays(message.guild.createdAt)}`, true)
+  .addField("ID", message.guild.id, true)
+  .addField("Owner", `${message.guild.owner.user.username}#${message.guild.owner.user.discriminator}`, true)
+  .addField("Region", region[message.guild.region], true)
+  .addField("Members", message.guild.memberCount, true)
+  .addField("Roles", message.guild.roles.size, true)
+  .addField("Channels", message.guild.channels.size, true)
+  .addField("Emojis", emojis, true)
+  .addField("Verification Level", verifLevels[message.guild.verificationLevel], true)
+  .addField("Default Channel", message.guild.defaultChannel, true)
+  .setColor(3447003)
+  message.channel.send({embed});
   }
+});
+
 client.on('message', message => {
     if (message.content.startsWith("#avatar")) {
         var mentionned = message.mentions.users.first();

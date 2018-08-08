@@ -113,7 +113,6 @@ client.on('message', message => {
               }else {
                 return message.reply(":x: " + "| You need to have the \"ADMINISTRATOR\" Permission")
                       message.channel.send(mmmmEmbed)
-});
   }
 });
 client.on('message', message => {

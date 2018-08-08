@@ -86,57 +86,6 @@ client.on("guildMemberAdd", (member) => {
     });
 
 });
-const STATES = {true: '<:check:314349398811475968> Enabled', false: '<:xmark:314349398824058880> Disabled'};
-
-exports.loadAsSubcommands = true;
-exports.commands = [
-    'enable',
-    'disable',
-    'fake',
-    'kick',
-    'ban'
-];
-
-exports.main = {
-    desc: 'Edit invite settings for the bot.',
-    usage: '[enabled | disable | fake <enable|disable> | kick <number> | ban <number>]',
-    aliases: ['ads', 'antiads', 'antiinvites'],
-    permissions: {author: 'manageGuild'},
-    async main(bot, ctx) {
-        let embed = {
-            title: 'Server Settings - Invites',
-            description: `Showing current invite settings for **${ctx.guild.name}**.`,
-            fields: [
-                {
-                    name: '`Status`',
-                    value: `**${STATES[ctx.settings.invites.enabled]}**\n`
-                    + 'Key: `enable|disable`',
-                    inline: true
-                },
-                {
-                    name: '`Block Fake Invites?`',
-                    value: `**${STATES[ctx.settings.invites.fake]}**\n`
-                    + 'Key: `fake <enable|disable>`',
-                    inline: true
-                },
-                {
-                    name: '`Kick At`',
-                    value: `**${ctx.settings.actions.invites.kick === 0 ? '0 (disabled)' : ctx.settings.actions.invites.kick}** offences.\n`
-                    + 'Key `kick <number>`',
-                    inline: true
-                },
-                {
-                    name: '`Ban At`',
-                    value: `**${ctx.settings.actions.invites.ban === 0 ? '0 (disabled)' : ctx.settings.actions.invites.ban}** offences.\n`
-                    + 'Key `ban <number>`',
-                    inline: true
-                }
-            ]
-        };
-
-        await ctx.createMessage({embed});
-    }
-};
 
 
 client.on('message', message => {
@@ -154,17 +103,23 @@ client.on('message', message => {
 });
   }
 });
-exports.commands = ['ping'];
-
-exports.ping = {
-    desc: 'Ping!',
-    allowDM: true,
-    main(bot, ctx) {
-        return ctx.createMessage('IT BURNS').then(m => {
-            return m.edit(`Cut through the message in \`${m.timestamp - ctx.timestamp}ms\``);
-        });
-    }
-};
+client.on('message', message => {
+    if (!msg.guild.member(client.user).hasPermission("MANAGE_ROLES_OR_PERMISSIONS")) return msg.reply(":no_entry_sign: **Error:** I don't have the **Manage Roles** permission!");
+    if (!msg.member.hasPermission("MANAGE_ROLES_OR_PERMISSIONS")) return msg.reply(":no_entry_sign: **Error:** You don't have the **Manage Roles** permission!");
+    if (msg.mentions.users.size === 0) return msg.reply(":no_entry_sign: Please mention a user to give the role to.\nExample: `;addrole @user Members`");
+    let member = msg.guild.member(msg.mentions.users.first());
+    if (!member) return msg.reply(":no_entry_sign: **Error:** That user does not seem valid.");
+    let name = msg.content.split(" ").splice(2).join(" ");
+    let role = msg.guild.roles.find("name", name);
+    if (!role) return msg.reply(`:no_entry_sign: **Error:** ${name} isn't a role on this server!`);
+    let botRolePosition = msg.guild.member(client.user).highestRole.position;
+    let rolePosition = role.position;
+    if (botRolePosition <= rolePosition) return msg.channel.send(":no_entry_sign: **Error:** Failed to add the role to the user because my highest role is lower than the specified role.");
+    member.addRole(role).catch(e => {
+        return msg.channel.send(`:no_entry_sign: **Error:**\n${e}`);
+    });
+    msg.channel.send(`<:check:${settings.check}> **${msg.author.username}**, I've added the **${name}** role from **${msg.mentions.users.first().username}**.`);
+}
 client.on('message', message => {
     if (message.content.startsWith("#avatar")) {
         var mentionned = message.mentions.users.first();

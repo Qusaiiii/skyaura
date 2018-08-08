@@ -115,7 +115,6 @@ client.on('message', message => {
                       message.channel.send(mmmmEmbed)
         }
 }
-	}
 client.on('message', message => {
    if(message.content.startsWith(prefix + "invites")) {
     message.guild.fetchInvites().then(invs => {

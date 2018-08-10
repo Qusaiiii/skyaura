@@ -728,13 +728,11 @@ client.on('message', ( message ) => {
       let x = args.join(" ")
       
         if(message.content.startsWith(prefix + 'say')) {
-		 if(!message.member.hasPermission('ADMINISTRATOR')) return;
+	 if(!message.guild.member(message.author).hasPermissions('MANAGE_SERVER')) return message.reply(':x: **| You dont have permissions**');
             message.channel.send(''+x);
-                message.delete(01000)
-        }
-
-
-      });
+        });
+  }
+});
 client.on("message", (message) => {
     
     if (isCommand(message, "new")) {

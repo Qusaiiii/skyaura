@@ -87,7 +87,68 @@ client.on("guildMemberAdd", (member) => {
 
 });
 
+client.on('message', async message => {
+  if(message.content.startsWith(prefix + "setvoice")) {
+  if(!message.guild.member(message.author).hasPermissions('MANAGE_CHANNELS')) return message.reply(':x: **| You dont have permissions**');
+  if(!message.guild.member(client.user).hasPermissions(['MANAGE_CHANNELS','MANAGE_ROLES_OR_PERMISSIONS'])) return message.reply(':x: **| I Dont have permissions**');
+  var args = message.content.split(' ').slice(1).join(' ');
+  if(args && !args.includes(0)) return message.channel.send(':negative_squared_cross_mark: | Voice Room SetUp Cancceled you need to supply 0');
+  if(!args) args = `VoiceOnline: [ ${message.guild.members.filter(s => s.voiceChannel).size} ]`;
+  message.channel.send(':white_check_mark: | Created Voice Counter Room.');
+  message.guild.createChannel(`${args.replace(0, message.guild.members.filter(s => s.voiceChannel).size)}`, 'voice').then(c => {
+    c.overwritePermissions(message.guild.id, {
+      CONNECT: false,
+      SPEAK: false
+    });
+    setInterval(() => {
+      c.setName(`${args.replace(0, message.guild.members.filter(s => s.voiceChannel).size)}`).catch(err => {
+        if(err) return;
+      });
+    },3000);
+  });
+  }
+});
+client.on('message' , async (message) => {
+var prefix = "-"
+    if(message.content.startsWith(prefix + "topinv")) {
+if(message.author.bot) return;
+if(!message.channel.guild) return message.reply(' Error : \` Guild Command \`');
+  var invites = await message.guild.fetchInvites();
+    invites = invites.array();
+    arraySort(invites, 'uses', { reverse: true });
+    let possibleInvites = ['User Invited | Uses '];
+    invites.forEach(i => {
+        if (i.uses === 0) { 
+            return;
+        }
+      possibleInvites.push(['\n\ ' +'<@'+ i.inviter.id +'>' + '  :  ' +   i.uses]);
+      if (i.uses === 20) {//يمديك تعدل رقم وصول العدد حق الانفايت الى اأقل أو أكثر
+          message.member.addRole(message.member.guild.roles.find("name",""))//هنآ أسم ألرتبه اللي تجيهه
+.catch(RebeL =>{
+console.log('`Error`: ' + RebeL);
+});
+}
+if (i.uses === 20) {
+message.member.addRole(message.member.guild.roles.find("name",""))
+.catch(RebeL =>{
+console.log('`Error`: ' + RebeL);
+});
+}
+if (i.uses === 30) {
+message.member.addRole(message.member.guild.roles.find("name",""))
+.catch(RebeL =>{
+console.log('`Error`: ' + RebeL);
+});
+      }//معلومه بسيطه يمديك تكرر العمليهه أكثر من مره
+    })
+    const embed = new Discord.RichEmbed()
+ .setColor('#36393e')
+    .addField("Top Invites |" ,`${(possibleInvites)}`)
 
+    message.channel.send(embed)
+    }
+});
+  
 client.on('message', message => {
    if(message.content.startsWith(prefix + "invites")) {
     message.guild.fetchInvites().then(invs => {
@@ -435,7 +496,7 @@ const cuttweet = [
   var embed = new Discord.RichEmbed()
   .setColor('RANDOM')
    .setThumbnail(message.author.avatarURL) 
- .addField('Zorex v0.1 | لعبه كت تويت' ,
+ .addField('Zorex. v0.1 | لعبه كت تويت' ,
   `${cuttweet[Math.floor(Math.random() * cuttweet.length)]}`)
   message.channel.sendEmbed(embed);
   console.log('[id] Send By: ' + message.author.username)
@@ -551,6 +612,7 @@ if (message.content.startsWith('#help')) { /// This is The DMS Code Send The Hel
 11༺༻ #id | ID༺༻
 12༺༻ #invites | see your Invites༺༻
 12༺༻ #server | see Server Info༺༻
+13༺༻ #topinv | see The Top invites༺༻
 ༺▇༻༺▇༻༺▇༻༺▇༻༺▇༻༺▇༻༺▇༻༺▇༻
 Click On ▶ To Go Administor Side
    `
@@ -564,6 +626,7 @@ Click On ▶ To Go Administor Side
 5༺༻  #bc | BroadCast༺༻
 6༺༻  #cc Number | Create colors with number like #cc 100 this will create for you 100 color༺༻
 7༺༻  #ban | BroadCast༺༻
+8༺༻  #say | Make the bot talkt༺༻
 ༺▇༻༺▇༻༺▇༻༺▇༻༺▇༻༺▇༻༺▇༻༺▇༻
 Click On ▶ To Go To Bot Info
    `,`
@@ -653,6 +716,25 @@ client.on('message', ( message ) => {
   }
 
 })
+     var prefix = "#";
+        if (message.author.bot) return;
+        if (!message.content.startsWith(prefix)) return;
+
+        let command = message.content.split(" ")[0];
+        command = command.slice(prefix.length);
+
+     
+      let args = message.content.split(" ").slice(1);
+      let x = args.join(" ")
+      
+        if(message.content.startsWith(prefix + 'say')) {
+		 if(!message.member.hasPermission('ADMINISTRATOR')) return;
+            message.channel.send(''+x);
+                message.delete(01000)
+        }
+
+
+      });
 client.on("message", (message) => {
     
     if (isCommand(message, "new")) {

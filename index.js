@@ -109,7 +109,7 @@ client.on('message', async message => {
   }
 });
 client.on('message' , async (message) => {
-var prefix = "-"
+var prefix = "#"
     if(message.content.startsWith(prefix + "topinv")) {
 if(message.author.bot) return;
 if(!message.channel.guild) return message.reply(' Error : \` Guild Command \`');
@@ -730,8 +730,7 @@ client.on('message', ( message ) => {
         if(message.content.startsWith(prefix + 'say')) {
 	 if(!message.guild.member(message.author).hasPermissions('MANAGE_SERVER')) return message.reply(':x: **| You dont have permissions**');
             message.channel.send(''+x);
-        });
-  }
+   }
 });
 client.on("message", (message) => {
     

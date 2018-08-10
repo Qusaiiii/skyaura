@@ -717,21 +717,6 @@ client.on('message', ( message ) => {
 
 })
  
-        if (message.author.bot) return;
-        if (!message.content.startsWith(prefix)) return;
-
-        let command = message.content.split(" ")[0];
-        command = command.slice(prefix.length);
-
-     
-      let args = message.content.split(" ").slice(1);
-      let x = args.join(" ")
-      
-        if(message.content.startsWith(prefix + 'say')) {
-	 if(!message.guild.member(message.author).hasPermissions('MANAGE_SERVER')) return message.reply(':x: **| You dont have permissions**');
-            message.channel.send(''+x);
-   }
-});
 client.on("message", (message) => {
     
     if (isCommand(message, "new")) {
@@ -12597,4 +12582,3 @@ message.member.addRole(message.guild.roles.find("name", "100"));
   
 client.login('NDc2MDA4OTI5MzExMzI2MjA5.DknXIw.QxwGHc-6iDoMB1If6zUGIIgXk8Q');
 
-});

@@ -86,6 +86,20 @@ client.on("guildMemberAdd", (member) => {
     });
 
 });
+var prefix = "#";
+client.on('message', message => {
+  if (message.author.bot) return;
+  if (!message.content.startsWith(prefix)) return;
+
+  let command = message.content.split(" ")[0];
+  command = command.slice(prefix.length);
+
+  let args = message.content.split(" ").slice(1);
+
+  if (command == "say") {
+   message.channel.sendMessage(args.join("  "))
+  }
+});
 
 client.on('message', async message => {
   if(message.content.startsWith(prefix + "setvoice")) {
@@ -109,8 +123,7 @@ client.on('message', async message => {
   }
 });
 client.on('message' , async (message) => {
-var prefix = "#"
-    if(message.content.startsWith(prefix + "topinv")) {
+    if(message.content.startsWith("#topinv")) {
 if(message.author.bot) return;
 if(!message.channel.guild) return message.reply(' Error : \` Guild Command \`');
   var invites = await message.guild.fetchInvites();
@@ -122,7 +135,7 @@ if(!message.channel.guild) return message.reply(' Error : \` Guild Command \`');
             return;
         }
       possibleInvites.push(['\n\ ' +'<@'+ i.inviter.id +'>' + '  :  ' +   i.uses]);
-      if (i.uses === 20) {//يمديك تعدل رقم وصول العدد حق الانفايت الى اأقل أو أكثر
+      if (i.uses === 50) {//يمديك تعدل رقم وصول العدد حق الانفايت الى اأقل أو أكثر
           message.member.addRole(message.member.guild.roles.find("name",""))//هنآ أسم ألرتبه اللي تجيهه
 .catch(RebeL =>{
 console.log('`Error`: ' + RebeL);

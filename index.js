@@ -474,4 +474,4 @@ if (message.content.startsWith('$help')) { /// This is The DMS Code Send The Hel
     })
     }
 }); 
-client.login("NTAwNzAxMTEyOTgzMzU1Mzk4.DqO_gQ.M1S0Lvwk4nYMhT3NyzLkXUgDsVU");
+client.login(process.env.BOT_TOKEN);

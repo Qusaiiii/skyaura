@@ -112,7 +112,7 @@ nick will change to \`[B!] Bolt\` every member who joins.
 **Note:**
 Tag \`{username}\` replace by the username of the new user.
 `)
-              .setFooter("Autonick", bot.user.displayAvatarURL)
+              .setFooter("Autonick", client.user.displayAvatarURL)
               .setTimestamp()
               message.react("📜")
               message.channel.send({embed});
@@ -162,7 +162,7 @@ Tag {username} replace by the username of the new user.`)
                 .setColor("#32d732")
                 .setDescription(`Autonick event has been **on**.`)
                 .setTimestamp()
-                .setFooter("Autonick Enable", bot.user.displayAvatarURL)
+                .setFooter("Autonick Enable", client.user.displayAvatarURL)
                 
                 message.channel.send({embed});
             }
@@ -178,7 +178,7 @@ Tag {username} replace by the username of the new user.`)
                 .setColor("#32d732")
                 .setDescription(`Autonick has been **off**.`)
                 .setTimestamp()
-                .setFooter("Autonick Disable", bot.user.displayAvatarURL)
+                .setFooter("Autonick Disable", client.user.displayAvatarURL)
                 
                 message.channel.send({embed});
             }

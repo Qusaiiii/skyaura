@@ -96,7 +96,7 @@ client.on('message', message => {
 	var args = message.content.toLowerCase().split(' ');
 	var args1 = args.slice(1).join(' ');
 	var userM = message.guild.member(message.mentions.users.first() || message.guild.members.find(m => m.id === args[1]));
-	if (message.content.startsWith("$autonicks")) {
+	if (message.content.startsWith("$autonick")) {
 var option = args.slice(0).join(" ")
             if (!option) {
               var embed = new Discord.RichEmbed()
@@ -104,11 +104,11 @@ var option = args.slice(0).join(" ")
               .setDescription(`**REMIND:** 
 - \`Hooks such as [] or <> are not to be used when using commands\`.
 **EXAMPLE:**
-- \`b!autonick [B!] {username}\`
+- \`$autonick [B!] {username}\`
 nick will change to \`[B!] Bolt\` every member who joins.
 **COMMANDS:**
-- \`b!autonick <Text>\`
-- \`b!autonick on/off\`
+- \`$autonick <Text>\`
+- \`$autonick on/off\`
 **Note:**
 Tag \`{username}\` replace by the username of the new user.
 `)
@@ -127,7 +127,7 @@ Tag \`{username}\` replace by the username of the new user.
               
               var embed = new Discord.RichEmbed()
               .setColor("#ec0000")
-              .setDescription(`<@${message.author.id}>, USAGE: b!autonick <nick>
+              .setDescription(`<@${message.author.id}>, USAGE: $autonick <nick>
 **Note:**
 Tag {username} replace by the username of the new user.`)
               .setTimestamp()
@@ -195,7 +195,8 @@ Tag {username} replace by the username of the new user.`)
               .setColor("#32d732")
               return message.channel.send(embed); 
              }
-});
+	}
+	});
 
 client.on('message', message => {
 	var command = message.content.toLowerCase().split(" ")[0];

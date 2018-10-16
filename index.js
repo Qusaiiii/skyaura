@@ -8,6 +8,7 @@ const prefix = '$';
 const devs = ['474172469566111745'];
 var cds = new Set();
 var cdv = new Set();
+var afk = [];
 const superagent = require("superagent");
 
  client.on('message', message => {
@@ -91,7 +92,29 @@ client.on('voiceStateUpdate', (u, member) => {
     vpoints[author].points += rPoints;
   }, 5000); // 5 Secs
 });
-
+client.on('message', message => {
+ if (message.content.startsWith(prefix + "afk")) {
+    if (arrayFind(afk, message.author.id)) {
+      var found, num = arrayFind(afk, message.author.id);
+      afk.splice(num, 1); // Remove the ID from the AFK list
+      var oldNick = message.member.displayName
+      var o = oldNick.replace("[AFK]", "");
+      message.member.setNickname(o);
+      message.channel.sendMessage(":white_check_mark: **Sucessfully turned off AFK**")
+    } else {
+      afk.push(message.author.id);
+      var oldNick = message.member.displayName
+      message.member.setNickname(oldNick + " [AFK]")
+      message.channel.sendMessage(":white_check_mark: **Sucessfully turned on AFK**")
+	     var idMent = message.content.replace("@", "");
+  idMent = idMent.replace("<", "");
+  idMent = idMent.replace(">", "");
+  var found, num = arrayFind(afk, idMent)
+  if (found) {
+    message.channel.sendMessage("The user you are trying to mention is AFK and may not respond.");
+  }
+});
+   
 client.on('message', message => {
 	var command = message.content.toLowerCase().split(" ")[0];
 	var args = message.content.toLowerCase().split(' ');

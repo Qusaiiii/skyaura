@@ -857,5 +857,5 @@ client.on('messageUpdate', (old, message) => {
   } catch(e) {
     if(e) return null;
   }
-);
+;
 client.login(process.env.BOT_TOKEN);

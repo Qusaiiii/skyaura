@@ -855,8 +855,5 @@ client.on('messageUpdate', (old, message) => {
     .setTimestamp();
     c.send(editedEmbed);
   }
-  } catch(e) {
-    if(e) return null;
-  }
-;
+});
 client.login(process.env.BOT_TOKEN);

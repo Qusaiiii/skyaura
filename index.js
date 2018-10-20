@@ -76,189 +76,7 @@ client.on('voiceStateUpdate', (u, member) => {
     vpoints[author].points += rPoints;
   }, 5000); // 5 Secs
 });
-client.on("channelCreate",  channel => {
-  if(!logs[channel.guild]) return;
-  const c = channel.guild.channels.find("name", logs[channel.guild.id].channelName);
-if(!c) return;
-  if(c) {
-    var emoji;
-    if(channel.type === 'text') emoji = ':speech_balloon:| كتابي';
-    if(channel.type === 'voice') emoji = ':microphone:| صوتي';
-    if(channel.type === 'category') emoji = ':books:| كاتاجوري';
-    channel.guild.fetchAuditLogs({
-      limit: 1,
-      type: 10
-    }).then(audit => {
-      var e = audit.entries.map(a => a.executor.username);
-      var cReate = new Discord.RichEmbed()
-      .setTitle('تم عمل روم بالسيرفر')
-      .setAuthor(audit.entries.map(e => e.executor.tag), channel.guild.iconURL)
-      .setColor('GREEN')
-      .addField('» اسم الروم', channel.name,true)
-      .addField('» بواسطة',e,true)
-      .addField('» نوع الروم', emoji, true)
-      .setFooter(`FlightBot | Logs.`)
-      .setTimestamp();
-      c.send(cReate);
-    });
-  } else {
-    return;
-  }
-});
-client.on('channelDelete', channel => {
-  if(!logs[channel.guild.id]) return;
-  const c = channel.guild.channels.find("name", logs[channel.guild.id].channelName);
-if(!c) return;
-  if(c) {
-    channel.guild.fetchAuditLogs({
-      limit: 1,
-      type: 12
-    }).then(audit => {
-      var e = audit.entries.map(a => a.executor.username);
-      var cDelete = new Discord.RichEmbed()
-      .setTitle('تم مسح روم بالسيرفر')
-      .setAuthor(audit.entries.map(e => e.executor.tag), channel.guild.iconURL)
-      .setColor('RED')
-      .addField('» اسم الروم', channel.name,true)
-      .addField('» بواسطة',e,true)
-      .setFooter(`FlightBot | Logs.`)
-      .setTimestamp();
-      c.send(cDelete);
-    });
-  } else {
-    return;
-  }
-});
-client.on('guildBanAdd', (guild, member) => {
-  if(!logs[member.guild]) return;
-  const c = guild.channels.find("name", logs[guild.id].channelName);
-  if(!c) return;
-  if(c) {
-    guild.fetchAuditLogs({
-      limit: 1,
-      type: 22
-    }).then(audit => {
-      var e = audit.entries.map(a => a.executor.username);
-      var bEmbed = new Discord.RichEmbed()
-      .setTitle('تم تبنيد شخص بالسيرفر')
-      .setAuthor(audit.entries.map(e => e.executor.tag), guild.iconURL)
-      .setColor('RED')
-      .addField('» الشخص', `**${member.tag}**`,true)
-      .addField('» بواسطة', `**${e}**`,true)
-      .setFooter(`FlightBot | Logs.`)
-      .setTimestamp();
-      c.send(bEmbed);
-    });
-  } else {
-    return;
-  }
-});
-client.on('guildBanRemove', (guild, member) => {
-  if(!logs[guild.id]) return;
-  const c = guild.channels.find('name', logs[guild.id].channelName);
-  if(!c) return;
-  if(c) {
-    guild.fetchAuditLogs({
-      limit: 1,
-      type: 23
-    }).then(audit => {
-      var e = audit.entries.map(a => a.executor.username);
-      var gEmbed = new Discord.RichEmbed()
-      .setTitle('تم فك الباند عن شخص')
-      .setAuthor(audit.entries.map(e => e.executor.tag), guild.iconURL)
-      .setColor('GREEN')
-      .addField('» الشخص', `**${member.tag}**`,true)
-      .addField('» بواسطة', `**${e}**`,true)
-      .setFooter(`FlightBot | Logs.`)
-      .setTimestamp();
-      c.send(gEmbed);
-    });
-  } else {
-    return;
-  }
-});
-client.on('guildMemberAdd', member => {
-  if(!logs[member.guild.id]) return;
-  const c = member.guild.channels.find('name', logs[member.guild.id].channelName) || member.guild.channels.get(logs[member.guild.id].channelId);
-  if(!c) return;
-  if(c) {
-    var wEmbed = new Discord.RichEmbed()
-    .setAuthor(member.user.username, member.user.avatarURL)
-    .setTitle('دخل عضو جديد')
-    .setColor('GREEN')
-    .setThumbnail(member.user.avatarURL)
-    .addField('» العضو', member,true)
-    .addField('» عدد الاعضاء', member.guild.memberCount,true)
-    .setFooter('FlightBot | Logs.')
-    .setTimestamp();
-    c.send(wEmbed);
-  } else {
-    return;
-  }
-});
-client.on('guildMemberRemove', member => {
-  if(!logs[member.guild.id]) return;
-  const c = member.guild.channels.find('name', logs[member.guild.id].channelName);
-  if(!c) return;
-  if(c) {
-    var lEmbed = new Discord.RichEmbed()
-    .setAuthor(member.user.username, member.user.avatarURL)
-    .setTitle('خرج عضو')
-    .setColor('RED')
-    .setThumbnail(member.user.avatarURL)
-    .addField('» العضو', member.user.tag,true)
-    .addField('» عدد الأعضاء',member.guild.memberCount,true)
-    .setFooter('FlightBot | Logs.')
-    .setTimestamp();
-    c.send(lEmbed);
-  } else {
-    return;
-  }
-});
-client.on('messageDelete', message => {
-  if(!logs[message.guild.id]) return;
-   const c = message.guild.channels.find('name', logs[message.guild.id].channelName);
-   if(!c) return;
-   if(c) {
-     if(!message || !message.id || !message.content || !message.guild || message.author.bot) return;
-     var mEmbed = new Discord.RichEmbed()
-     .setTitle(`🗑 ${message.author.tag} مسح رسالة .`)
-     .setColor('BLACK')
-     .setThumbnail(message.author.avatarURL)
-     .setDescription(`\`\`\`${message.cleanContent.replace('`', '\`')}\`\`\``)
-     .addField('» صاحب الرسالة',message.author,true)
-     .addField('» الروم',message.channel,true)
-     .setFooter('FlightBot | Logs.')
-     .setTimestamp();
-     c.send(mEmbed);
-   } else {
-     return;
-   }
-});
-client.on('messageUpdate', (old, message) => {
-  try {
-    if(!logs[message.guild.id]) return;
-  const c = message.guild.channels.get(logs[message.guild.id].channelId);
-  if(c) {
-    if (!message || !message.id || !message.content || !message.guild || message.author.bot || message.content === old.content) return;
-    var editedEmbed = new Discord.RichEmbed()
-    .setTitle(`✏ ${message.author.tag} عدل رسالة .`)
-    .setColor('BLACK')
-    .setThumbnail(message.author.avatarURL)
-    .setDescription(`الرسالة القديمة : \`\`\`${old.cleanContent || old.content}\`\`\`\nالرسالة الجديدة : \`\`\`${message.cleanContent || message.content}\`\`\``)
-    .addField('» صاحب الرسالة', message.author,true)
-    .addField('» الروم', message.channel, true)
-    .setFooter('FlightBot | Logs.')
-    .setTimestamp();
-    c.send(editedEmbed);
-  }
-  } catch(e) {
-    if(e) return null;
-  }
-});
-process.on('unhandledRejection', e => {
-  return e;
-});
+
    
 client.on('message', message => {
 	var command = message.content.toLowerCase().split(" ")[0];
@@ -747,6 +565,46 @@ client.on('message',message => {
                    message.channel.sendEmbed(embed);
            }
 });
+client.on('message',async message => {
+if(message.author.bot) return;
+if(message.channel.type === 'dm') return
+  const m = message.content.split(' ').slice(1);
+  var args = message.content.split(' ');
+  if(message.content.toLowerCase().startsWith(prefix + "settings")) {
+    if(!message.member.hasPermission("MANAGE_GUILD")) return message.channel.send(':negative_squared_cross_mark: » أنت لا تملك الخصائص الكافية');
+    if(!args[1] || args[1] && args[1] !== 'logs' && args[1] !== 'prefix' && args[1] !== 'mprefix') {
+      if(args[0] !== prefix + 'settings') return;
+      var aa;
+      if(!logs[message.guild.id]) aa = 'None';
+      if(logs[message.guild.id]) aa = logs[message.guild.id].channelName;
+      var setEmbed = new Discord.RichEmbed()
+      .setAuthor(message.author.username, message.author.avatarURL)
+      .setTitle(`اعدادات \`${message.guild.name}\``)
+      .addField(':exclamation: » الأمر', `\`Default\` ${prefix}\n\`Guild\` ${prefix}\n\`Syntax\` -settings prefix [الأمر الجديد]`,true)
+      .addField(':musical_note: » أمر الأغاني', `\`Default\` ${prefix}\n\`Guild\` ${prefix}\n\`Syntax\` -settings mprefix [الأمر الجديد]`,true)
+      .addField(':hammer_pick: » اللوق', `\`Default\` None\n\`Guild\` ${aa}\n\`Syntax\` -settings logs [الروم الجديد]`,true);
+      message.channel.send(setEmbed);
+    }
+    if(args[1] === 'logs') {
+      if(!args[2]) return message.channel.send(':negative_squared_cross_mark: » قم بكتابة اسم الروم');
+      if(!message.guild.channels.find('name', args[2])) return message.channel.send(':negative_squared_cross_mark: » هذا الروم غير موجود حاول منشنة روم اخر');
+      message.channel.send(':white_check_mark: » تم حفظ التغييرات');
+      logs[message.guild.id] = {
+        channelName: args[2],
+        channelId: message.guild.channels.find('name', args[2]).id
+      };
+      fs.writeFile('./src/guildLogs.json', JSON.stringify(logs, null ,1), (err) => {
+        if(err) message.channel.send(':negative_squared_cross_mark: » خطأ في قاعدة البيانات حاول التواصل مع مبرمج البوت لحل هذه المشكلة');
+      });
+    }
+    if(args[1] === 'prefix') {
+      return message.channel.send(':negative_squared_cross_mark: » هذه الخاصية غير متوفرة');
+    }
+    if(args[1] === 'mprefix') {
+      return message.channel.send(':negative_squared_cross_mark: » هذه الخاصية غير متوفرة');
+    }
+}
+});
 client.on('message', message => {
 if (message.content.startsWith('$help')) { /// This is The DMS Code Send The Help In DMS // Code By NotGucci
     let pages = [`
@@ -819,5 +677,188 @@ let embed = new Discord.RichEmbed()
 .addField('**WebSocket:**',api + " ms")
 message.channel.send({embed:embed});
 }
+});
+client.on("channelCreate",  channel => {
+  if(!logs[channel.guild]) return;
+  const c = channel.guild.channels.find("name", logs[channel.guild.id].channelName);
+if(!c) return;
+  if(c) {
+    var emoji;
+    if(channel.type === 'text') emoji = ':speech_balloon:| كتابي';
+    if(channel.type === 'voice') emoji = ':microphone:| صوتي';
+    if(channel.type === 'category') emoji = ':books:| كاتاجوري';
+    channel.guild.fetchAuditLogs({
+      limit: 1,
+      type: 10
+    }).then(audit => {
+      var e = audit.entries.map(a => a.executor.username);
+      var cReate = new Discord.RichEmbed()
+      .setTitle('تم عمل روم بالسيرفر')
+      .setAuthor(audit.entries.map(e => e.executor.tag), channel.guild.iconURL)
+      .setColor('GREEN')
+      .addField('» اسم الروم', channel.name,true)
+      .addField('» بواسطة',e,true)
+      .addField('» نوع الروم', emoji, true)
+      .setFooter(`FlightBot | Logs.`)
+      .setTimestamp();
+      c.send(cReate);
+    });
+  } else {
+    return;
+  }
+});
+client.on('channelDelete', channel => {
+  if(!logs[channel.guild.id]) return;
+  const c = channel.guild.channels.find("name", logs[channel.guild.id].channelName);
+if(!c) return;
+  if(c) {
+    channel.guild.fetchAuditLogs({
+      limit: 1,
+      type: 12
+    }).then(audit => {
+      var e = audit.entries.map(a => a.executor.username);
+      var cDelete = new Discord.RichEmbed()
+      .setTitle('تم مسح روم بالسيرفر')
+      .setAuthor(audit.entries.map(e => e.executor.tag), channel.guild.iconURL)
+      .setColor('RED')
+      .addField('» اسم الروم', channel.name,true)
+      .addField('» بواسطة',e,true)
+      .setFooter(`FlightBot | Logs.`)
+      .setTimestamp();
+      c.send(cDelete);
+    });
+  } else {
+    return;
+  }
+});
+client.on('guildBanAdd', (guild, member) => {
+  if(!logs[member.guild]) return;
+  const c = guild.channels.find("name", logs[guild.id].channelName);
+  if(!c) return;
+  if(c) {
+    guild.fetchAuditLogs({
+      limit: 1,
+      type: 22
+    }).then(audit => {
+      var e = audit.entries.map(a => a.executor.username);
+      var bEmbed = new Discord.RichEmbed()
+      .setTitle('تم تبنيد شخص بالسيرفر')
+      .setAuthor(audit.entries.map(e => e.executor.tag), guild.iconURL)
+      .setColor('RED')
+      .addField('» الشخص', `**${member.tag}**`,true)
+      .addField('» بواسطة', `**${e}**`,true)
+      .setFooter(`FlightBot | Logs.`)
+      .setTimestamp();
+      c.send(bEmbed);
+    });
+  } else {
+    return;
+  }
+});
+client.on('guildBanRemove', (guild, member) => {
+  if(!logs[guild.id]) return;
+  const c = guild.channels.find('name', logs[guild.id].channelName);
+  if(!c) return;
+  if(c) {
+    guild.fetchAuditLogs({
+      limit: 1,
+      type: 23
+    }).then(audit => {
+      var e = audit.entries.map(a => a.executor.username);
+      var gEmbed = new Discord.RichEmbed()
+      .setTitle('تم فك الباند عن شخص')
+      .setAuthor(audit.entries.map(e => e.executor.tag), guild.iconURL)
+      .setColor('GREEN')
+      .addField('» الشخص', `**${member.tag}**`,true)
+      .addField('» بواسطة', `**${e}**`,true)
+      .setFooter(`FlightBot | Logs.`)
+      .setTimestamp();
+      c.send(gEmbed);
+    });
+  } else {
+    return;
+  }
+});
+client.on('guildMemberAdd', member => {
+  if(!logs[member.guild.id]) return;
+  const c = member.guild.channels.find('name', logs[member.guild.id].channelName) || member.guild.channels.get(logs[member.guild.id].channelId);
+  if(!c) return;
+  if(c) {
+    var wEmbed = new Discord.RichEmbed()
+    .setAuthor(member.user.username, member.user.avatarURL)
+    .setTitle('دخل عضو جديد')
+    .setColor('GREEN')
+    .setThumbnail(member.user.avatarURL)
+    .addField('» العضو', member,true)
+    .addField('» عدد الاعضاء', member.guild.memberCount,true)
+    .setFooter('FlightBot | Logs.')
+    .setTimestamp();
+    c.send(wEmbed);
+  } else {
+    return;
+  }
+});
+client.on('guildMemberRemove', member => {
+  if(!logs[member.guild.id]) return;
+  const c = member.guild.channels.find('name', logs[member.guild.id].channelName);
+  if(!c) return;
+  if(c) {
+    var lEmbed = new Discord.RichEmbed()
+    .setAuthor(member.user.username, member.user.avatarURL)
+    .setTitle('خرج عضو')
+    .setColor('RED')
+    .setThumbnail(member.user.avatarURL)
+    .addField('» العضو', member.user.tag,true)
+    .addField('» عدد الأعضاء',member.guild.memberCount,true)
+    .setFooter('FlightBot | Logs.')
+    .setTimestamp();
+    c.send(lEmbed);
+  } else {
+    return;
+  }
+});
+client.on('messageDelete', message => {
+  if(!logs[message.guild.id]) return;
+   const c = message.guild.channels.find('name', logs[message.guild.id].channelName);
+   if(!c) return;
+   if(c) {
+     if(!message || !message.id || !message.content || !message.guild || message.author.bot) return;
+     var mEmbed = new Discord.RichEmbed()
+     .setTitle(`🗑 ${message.author.tag} مسح رسالة .`)
+     .setColor('BLACK')
+     .setThumbnail(message.author.avatarURL)
+     .setDescription(`\`\`\`${message.cleanContent.replace('`', '\`')}\`\`\``)
+     .addField('» صاحب الرسالة',message.author,true)
+     .addField('» الروم',message.channel,true)
+     .setFooter('FlightBot | Logs.')
+     .setTimestamp();
+     c.send(mEmbed);
+   } else {
+     return;
+   }
+});
+client.on('messageUpdate', (old, message) => {
+  try {
+    if(!logs[message.guild.id]) return;
+  const c = message.guild.channels.get(logs[message.guild.id].channelId);
+  if(c) {
+    if (!message || !message.id || !message.content || !message.guild || message.author.bot || message.content === old.content) return;
+    var editedEmbed = new Discord.RichEmbed()
+    .setTitle(`✏ ${message.author.tag} عدل رسالة .`)
+    .setColor('BLACK')
+    .setThumbnail(message.author.avatarURL)
+    .setDescription(`الرسالة القديمة : \`\`\`${old.cleanContent || old.content}\`\`\`\nالرسالة الجديدة : \`\`\`${message.cleanContent || message.content}\`\`\``)
+    .addField('» صاحب الرسالة', message.author,true)
+    .addField('» الروم', message.channel, true)
+    .setFooter('FlightBot | Logs.')
+    .setTimestamp();
+    c.send(editedEmbed);
+  }
+  } catch(e) {
+    if(e) return null;
+  }
+});
+process.on('unhandledRejection', e => {
+  return e;
 });
 client.login(process.env.BOT_TOKEN);

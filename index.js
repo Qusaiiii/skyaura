@@ -31,8 +31,7 @@ client.on('ready',async () => {
     if(!vpoints[m.id]) vpoints[m.id] = {points: 0, id: m.id};
     fs.writeFileSync("./Voice.json", JSON.stringify(vpoints, null, 2));
   });
-});
- var client = new Discord.Client();
+
 client.on('message',async message => {
   if(message.author.bot || message.channel.type === 'dm') return;
   let args = message.content.split(' ');

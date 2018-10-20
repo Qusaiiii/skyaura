@@ -612,6 +612,7 @@ const tpoints = JSON.parse(fs.readFileSync('./Text.json', 'UTF8'));
 const vpoints = JSON.parse(fs.readFileSync('./Voice.json', 'UTF8'));
 client.config = config;
 client.on('ready',async () => {
+	 client.users.forEach(m => {
     if(m.bot) return;
     if(!tpoints[m.id]) tpoints[m.id] = {points: 0, id: m.id};
     fs.writeFileSync("./Text.json", JSON.stringify(tpoints, null, 2));

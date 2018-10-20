@@ -123,7 +123,7 @@ client.on('message', message => {
 		 }
 }
 });
-ero.on('message',async message => {
+client.on('message',async message => {
 if(message.author.bot) return;
 if(message.channel.type === 'dm') return
     if(message.content.startsWith(prefix + 'points')) {
@@ -143,7 +143,7 @@ if(message.channel.type === 'dm') return
         }
     }
 });
-hero.on('message',async message => {
+client.on('message',async message => {
 if(message.author.bot) return;
 if(message.channel.type === 'dm') return
   var one;
@@ -183,7 +183,7 @@ if(message.channel.type === 'dm') return
   }
 });
  
-hero.on('voiceStateUpdate', (u, member) => {
+client.on('voiceStateUpdate', (u, member) => {
   if(member.voiceChannel === null || !member.voiceChannel) {
     last[member.id] = {
       time: new Date().toLocaleString()
@@ -193,7 +193,7 @@ hero.on('voiceStateUpdate', (u, member) => {
     });
   }
 });
-hero.on('message',async message => {
+client.on('message',async message => {
 if(message.author.bot) return;
 if(message.channel.type === 'dm') return
   if(message.content.toLowerCase().startsWith(prefix + "last")) {
@@ -203,7 +203,7 @@ if(message.channel.type === 'dm') return
   }
 });
 var returned;
-hero.on('voiceStateUpdate', (user, member) => {
+client.on('voiceStateUpdate', (user, member) => {
   if(member.selfDeaf || member.selfMute || member.serverDeaf || member.serverMute) {
     console.log(`${member.user.username} is muted.`);
     returned = false;
@@ -232,7 +232,7 @@ hero.on('voiceStateUpdate', (user, member) => {
           level: curLvl + 1
         };
       }
-      fs.writeFile('./TextAndVoice/voiceState.json', JSON.stringify(voice, null, 4), (e) => {
+      fs.writeFile('./src/TextAndVoice/voiceState.json', JSON.stringify(voice, null, 4), (e) => {
         if(e) console.log(e);
       });
     } else if(returned === false) {
@@ -240,7 +240,7 @@ hero.on('voiceStateUpdate', (user, member) => {
     }
   },5000);
 });
-hero.on('message',async message => {
+client.on('message',async message => {
 if(message.author.bot) return;
 if(message.channel.type === 'dm') return
   if(message.author.bot) return;
@@ -257,12 +257,12 @@ if(message.channel.type === 'dm') return
     };
   }
  
-  fs.writeFile('./TextAndVoice/textState.json', JSON.stringify(text, null, 4), (e) => {
+  fs.writeFile('./src/TextAndVoice/textState.json', JSON.stringify(text, null, 4), (e) => {
     if(e) console.log(e);
   });
 });
  
-hero.on('message',async message => {
+client.on('message',async message => {
 if(message.author.bot) return;
 if(message.channel.type === 'dm') return
 if(message.content.startsWith(prefix + "id")) {
@@ -272,7 +272,7 @@ if(message.content.startsWith(prefix + "id")) {
       xp: 1,
       level: 1
     };
-    fs.writeFile('./TextAndVoice/voiceState.json', JSON.stringify(voice, null, 4), (e) => {
+    fs.writeFile('./src/TextAndVoice/voiceState.json', JSON.stringify(voice, null, 4), (e) => {
       if(e) return message.channel.send('**[ ERR303 ] . **' + e);
     });
       message.guild.fetchInvites().then(invs => {
@@ -338,33 +338,7 @@ client.on('message', message => {
       message.channel.sendEmbed(embed);
     }
 });
-client.on('message', message => {
-    if (message.content.startsWith("$id")) {
-var args = message.content.split(" ").slice(1);
-let user = message.mentions.users.first();
-var men = message.mentions.users.first();
- var heg;
- if(men) {
-     heg = men
- } else {
-     heg = message.author
- }
-var mentionned = message.mentions.members.first();
-  var h;
- if(mentionned) {
-     h = mentionned
- } else {
-     h = message.member
- }
-        moment.locale('ar-TN');
-var id = new  Discord.RichEmbed()
-.setColor("RANDOM")
-.addField(': انضمامك لسيرفر قبل', `${moment(h.joinedAt).format('YYYY/M/D HH:mm:ss')} \n \`${moment(h.joinedAt).fromNow()}\``, true)
-.addField(': دخولك لديسكورد قبل', `${moment(heg.createdTimestamp).format('YYYY/M/D HH:mm:ss')} **\n** \`${moment(heg.createdTimestamp).fromNow()}\`` ,true)
-.addField(`: الرتب`, `${message.guild.members.get(h.id).roles.map(r => `\`${r.name}\``).slice(1).join('\n') || 'لايوجد رتب'}`,true)
-.setThumbnail(heg.avatarURL);
-message.channel.send(id)
-}       });
+
 client.on('message', message => {
 	var command = message.content.toLowerCase().split(" ")[0];
 	var args = message.content.toLowerCase().split(' ');

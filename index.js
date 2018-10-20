@@ -858,7 +858,4 @@ client.on('messageUpdate', (old, message) => {
     if(e) return null;
   }
 });
-process.on('unhandledRejection', e => {
-  return e;
-});
 client.login(process.env.BOT_TOKEN);

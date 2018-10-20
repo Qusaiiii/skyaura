@@ -10,27 +10,13 @@ var cds = new Set();
 var cdv = new Set();
 var afk = [];
 const superagent = require("superagent");
-
- client.on('message', message => {
-	var command = message.content.toLowerCase().split(" ")[0];
-	var args = message.content.toLowerCase().split(' ');
-	var args1 = args.slice(1).join(' ');
-	var userM = message.guild.member(message.mentions.users.first() || message.guild.members.find(m => m.id === args[1]));
-	if (message.content.startsWith("$embed")) {
-	const input = args.slice();
-
-	if (!input || input.length === 0) return message.reply(lang.embed_error);
-	if (input.join(' ').length > 1000) return message.reply(lang.embed_toobig);
-
-	const embedinput = input.join(' ').replace('//', '\n');
-	const embed = new Discord.RichEmbed()
-		.setDescription(embedinput)
-		.setColor('#66ff66');
-
-	message.channel.send(embed);
-		
-	 }
-});
+const voice = require('./TextAndVoice/voiceState.json');
+const text = require('./TextAndVoice/textState.json');
+const auto = require('./src/autoMessage.json');
+const last = require('./src/lastSeen.json');
+const logs = require('./src/guildLogs.json');
+const nick = require('./src/lastNicknames.json');
+ 
 
 
 const config = { prefix: "$" };
@@ -38,8 +24,6 @@ const tpoints = JSON.parse(fs.readFileSync('./Text.json', 'UTF8'));
 const vpoints = JSON.parse(fs.readFileSync('./Voice.json', 'UTF8'));
 client.config = config;
 client.on('ready',async () => {
- 
-  client.users.forEach(m => {
     if(m.bot) return;
     if(!tpoints[m.id]) tpoints[m.id] = {points: 0, id: m.id};
     fs.writeFileSync("./Text.json", JSON.stringify(tpoints, null, 2));
@@ -92,27 +76,188 @@ client.on('voiceStateUpdate', (u, member) => {
     vpoints[author].points += rPoints;
   }, 5000); // 5 Secs
 });
-client.on('message', message => {
- if (message.content.startsWith(prefix + "afk")) {
-    if (arrayFind(afk, message.author.id)) {
-      var found, num = arrayFind(afk, message.author.id);
-      afk.splice(num, 1); // Remove the ID from the AFK list
-      var oldNick = message.member.displayName
-      var o = oldNick.replace("[AFK]", "");
-      message.member.setNickname(o);
-      message.channel.sendMessage(":white_check_mark: **Sucessfully turned off AFK**")
-    } else {
-      afk.push(message.author.id);
-      var oldNick = message.member.displayName
-      message.member.setNickname(oldNick + " [AFK]")
-      message.channel.sendMessage(":white_check_mark: **Sucessfully turned on AFK**")
-	     var idMent = message.content.replace("@", "");
-  idMent = idMent.replace("<", "");
-  idMent = idMent.replace(">", "");
-  var found, num = arrayFind(afk, idMent)
-  if (found) {
-    message.channel.sendMessage("The user you are trying to mention is AFK and may not respond.");
+client.on("channelCreate",  channel => {
+  if(!logs[channel.guild]) return;
+  const c = channel.guild.channels.find("name", logs[channel.guild.id].channelName);
+if(!c) return;
+  if(c) {
+    var emoji;
+    if(channel.type === 'text') emoji = ':speech_balloon:| كتابي';
+    if(channel.type === 'voice') emoji = ':microphone:| صوتي';
+    if(channel.type === 'category') emoji = ':books:| كاتاجوري';
+    channel.guild.fetchAuditLogs({
+      limit: 1,
+      type: 10
+    }).then(audit => {
+      var e = audit.entries.map(a => a.executor.username);
+      var cReate = new Discord.RichEmbed()
+      .setTitle('تم عمل روم بالسيرفر')
+      .setAuthor(audit.entries.map(e => e.executor.tag), channel.guild.iconURL)
+      .setColor('GREEN')
+      .addField('» اسم الروم', channel.name,true)
+      .addField('» بواسطة',e,true)
+      .addField('» نوع الروم', emoji, true)
+      .setFooter(`FlightBot | Logs.`)
+      .setTimestamp();
+      c.send(cReate);
+    });
+  } else {
+    return;
   }
+});
+client.on('channelDelete', channel => {
+  if(!logs[channel.guild.id]) return;
+  const c = channel.guild.channels.find("name", logs[channel.guild.id].channelName);
+if(!c) return;
+  if(c) {
+    channel.guild.fetchAuditLogs({
+      limit: 1,
+      type: 12
+    }).then(audit => {
+      var e = audit.entries.map(a => a.executor.username);
+      var cDelete = new Discord.RichEmbed()
+      .setTitle('تم مسح روم بالسيرفر')
+      .setAuthor(audit.entries.map(e => e.executor.tag), channel.guild.iconURL)
+      .setColor('RED')
+      .addField('» اسم الروم', channel.name,true)
+      .addField('» بواسطة',e,true)
+      .setFooter(`FlightBot | Logs.`)
+      .setTimestamp();
+      c.send(cDelete);
+    });
+  } else {
+    return;
+  }
+});
+client.on('guildBanAdd', (guild, member) => {
+  if(!logs[member.guild]) return;
+  const c = guild.channels.find("name", logs[guild.id].channelName);
+  if(!c) return;
+  if(c) {
+    guild.fetchAuditLogs({
+      limit: 1,
+      type: 22
+    }).then(audit => {
+      var e = audit.entries.map(a => a.executor.username);
+      var bEmbed = new Discord.RichEmbed()
+      .setTitle('تم تبنيد شخص بالسيرفر')
+      .setAuthor(audit.entries.map(e => e.executor.tag), guild.iconURL)
+      .setColor('RED')
+      .addField('» الشخص', `**${member.tag}**`,true)
+      .addField('» بواسطة', `**${e}**`,true)
+      .setFooter(`FlightBot | Logs.`)
+      .setTimestamp();
+      c.send(bEmbed);
+    });
+  } else {
+    return;
+  }
+});
+client.on('guildBanRemove', (guild, member) => {
+  if(!logs[guild.id]) return;
+  const c = guild.channels.find('name', logs[guild.id].channelName);
+  if(!c) return;
+  if(c) {
+    guild.fetchAuditLogs({
+      limit: 1,
+      type: 23
+    }).then(audit => {
+      var e = audit.entries.map(a => a.executor.username);
+      var gEmbed = new Discord.RichEmbed()
+      .setTitle('تم فك الباند عن شخص')
+      .setAuthor(audit.entries.map(e => e.executor.tag), guild.iconURL)
+      .setColor('GREEN')
+      .addField('» الشخص', `**${member.tag}**`,true)
+      .addField('» بواسطة', `**${e}**`,true)
+      .setFooter(`FlightBot | Logs.`)
+      .setTimestamp();
+      c.send(gEmbed);
+    });
+  } else {
+    return;
+  }
+});
+client.on('guildMemberAdd', member => {
+  if(!logs[member.guild.id]) return;
+  const c = member.guild.channels.find('name', logs[member.guild.id].channelName) || member.guild.channels.get(logs[member.guild.id].channelId);
+  if(!c) return;
+  if(c) {
+    var wEmbed = new Discord.RichEmbed()
+    .setAuthor(member.user.username, member.user.avatarURL)
+    .setTitle('دخل عضو جديد')
+    .setColor('GREEN')
+    .setThumbnail(member.user.avatarURL)
+    .addField('» العضو', member,true)
+    .addField('» عدد الاعضاء', member.guild.memberCount,true)
+    .setFooter('FlightBot | Logs.')
+    .setTimestamp();
+    c.send(wEmbed);
+  } else {
+    return;
+  }
+});
+client.on('guildMemberRemove', member => {
+  if(!logs[member.guild.id]) return;
+  const c = member.guild.channels.find('name', logs[member.guild.id].channelName);
+  if(!c) return;
+  if(c) {
+    var lEmbed = new Discord.RichEmbed()
+    .setAuthor(member.user.username, member.user.avatarURL)
+    .setTitle('خرج عضو')
+    .setColor('RED')
+    .setThumbnail(member.user.avatarURL)
+    .addField('» العضو', member.user.tag,true)
+    .addField('» عدد الأعضاء',member.guild.memberCount,true)
+    .setFooter('FlightBot | Logs.')
+    .setTimestamp();
+    c.send(lEmbed);
+  } else {
+    return;
+  }
+});
+client.on('messageDelete', message => {
+  if(!logs[message.guild.id]) return;
+   const c = message.guild.channels.find('name', logs[message.guild.id].channelName);
+   if(!c) return;
+   if(c) {
+     if(!message || !message.id || !message.content || !message.guild || message.author.bot) return;
+     var mEmbed = new Discord.RichEmbed()
+     .setTitle(`🗑 ${message.author.tag} مسح رسالة .`)
+     .setColor('BLACK')
+     .setThumbnail(message.author.avatarURL)
+     .setDescription(`\`\`\`${message.cleanContent.replace('`', '\`')}\`\`\``)
+     .addField('» صاحب الرسالة',message.author,true)
+     .addField('» الروم',message.channel,true)
+     .setFooter('FlightBot | Logs.')
+     .setTimestamp();
+     c.send(mEmbed);
+   } else {
+     return;
+   }
+});
+client.on('messageUpdate', (old, message) => {
+  try {
+    if(!logs[message.guild.id]) return;
+  const c = message.guild.channels.get(logs[message.guild.id].channelId);
+  if(c) {
+    if (!message || !message.id || !message.content || !message.guild || message.author.bot || message.content === old.content) return;
+    var editedEmbed = new Discord.RichEmbed()
+    .setTitle(`✏ ${message.author.tag} عدل رسالة .`)
+    .setColor('BLACK')
+    .setThumbnail(message.author.avatarURL)
+    .setDescription(`الرسالة القديمة : \`\`\`${old.cleanContent || old.content}\`\`\`\nالرسالة الجديدة : \`\`\`${message.cleanContent || message.content}\`\`\``)
+    .addField('» صاحب الرسالة', message.author,true)
+    .addField('» الروم', message.channel, true)
+    .setFooter('FlightBot | Logs.')
+    .setTimestamp();
+    c.send(editedEmbed);
+  }
+  } catch(e) {
+    if(e) return null;
+  }
+});
+process.on('unhandledRejection', e => {
+  return e;
 });
    
 client.on('message', message => {
@@ -159,6 +304,187 @@ client.on('message', message => {
 			message.channel.send(embedS);
 		 }
 }
+});
+ero.on('message',async message => {
+if(message.author.bot) return;
+if(message.channel.type === 'dm') return
+    if(message.content.startsWith(prefix + 'points')) {
+        var args = message.content.split(' ');
+        if(args[1] === `slots`) {
+            const data = require(`./voicePoints/${message.guild.id}.json`);
+            const author = message.author.id;
+           
+            if(!data[author]) data[author] = {
+                points: 1,
+                level: 1
+            };
+            fs.writeFile(`./voicePoints/${message.guild.id}.json`, JSON.stringify(data, null, 4), function(err) {
+        if(err) message.channel.send(`حدث خطأ اثناء تسجيل البيانات.`);
+      });
+            message.channel.send(`**[** \`${data[author].points} Points\` **]**\n **[** \`${data[author].level} Levels\` **]**`);
+        }
+    }
+});
+hero.on('message',async message => {
+if(message.author.bot) return;
+if(message.channel.type === 'dm') return
+  var one;
+  var two;
+  var three;
+  var aa;
+ 
+  const data = require(`./voicePoints/${message.guild.id}.json`);
+  const author = message.author.id;
+  const random = Math.floor(Math.random() * 8) + 1;
+  if(message.content.startsWith(prefix + "slots")) {
+      if(message.content.split(' ')[0] !== `${prefix}slots`) return;
+    var first = ["🍊", "🍇", "🍒", "🍎", "🍋"];
+    var second = ["🍊", "🍇", "🍒", "🍎", "🍋"];
+    var third = ["🍊", "🍇", "🍒", "🍎", "🍋"];
+ 
+    one = first[Math.floor(Math.random () * first.length) + 0];
+    two = second[Math.floor(Math.random() * second.length) + 0];
+    three = third[Math.floor(Math.random() * third.length) + 0];
+    if(one === two && two === three) {
+      aa = "لقد فزت";
+    } else {
+      aa = "لقد خسرت";
+    }
+   
+    if(aa === "لقد فزت") {
+      if(!data[author]) data[author] = {
+        points: 1,
+        level: 1
+      };
+      data[author].points += (+random);
+      fs.writeFile(`./voicePoints/${message.guild.id}.json`, JSON.stringify(data, null, 4), function(err) {
+        if(err) message.channel.send(`حدث خطأ اثناء تسجيل البيانات.`);
+      });
+    }
+    message.channel.send(`**${one} | ${two} | ${three}**\n\n\`${aa}\`\n${message.author}`);
+  }
+});
+ 
+hero.on('voiceStateUpdate', (u, member) => {
+  if(member.voiceChannel === null || !member.voiceChannel) {
+    last[member.id] = {
+      time: new Date().toLocaleString()
+    };
+    fs.writeFile('./src/lastSeen.json', JSON.stringify(last, null, 4), (e) => {
+      if(e) console.log(e);
+    });
+  }
+});
+hero.on('message',async message => {
+if(message.author.bot) return;
+if(message.channel.type === 'dm') return
+  if(message.content.toLowerCase().startsWith(prefix + "last")) {
+    if(!last[message.author.id]) return message.reply('**يجب عليك الدخول الى روم صوتي لتجميع بياناتك**');
+    let f = message.mentions.users.first()|| message.author;
+    message.reply(`${last[f.id].time}`);
+  }
+});
+var returned;
+hero.on('voiceStateUpdate', (user, member) => {
+  if(member.selfDeaf || member.selfMute || member.serverDeaf || member.serverMute) {
+    console.log(`${member.user.username} is muted.`);
+    returned = false;
+  }
+  if(!member.selfDeaf || !member.selfMute ||!member.serverDeaf || !member.serverMute) {
+    console.log(`${member.user.username} is not muted.`);
+    returned = true;
+  }
+  setInterval(() => {
+    if(returned === true) {
+      if(member.bot) return;
+      if(!member.voiceChannel) returned = false;
+      if(!voice[member.id]) voice[member.id] = {
+        xp: 1,
+        level: 1
+      };
+      voice[member.id] = {
+        xp: voice[member.id].xp + Math.floor(Math.random() * 4) + 1,
+        level: voice[member.id].level
+      };
+      var curXp = voice[member.id].xp;
+      var curLvl = voice[member.id].level;
+      if(curXp >= 300) {
+        voice[member.id] = {
+          xp: 1,
+          level: curLvl + 1
+        };
+      }
+      fs.writeFile('./TextAndVoice/voiceState.json', JSON.stringify(voice, null, 4), (e) => {
+        if(e) console.log(e);
+      });
+    } else if(returned === false) {
+      return null;
+    }
+  },5000);
+});
+hero.on('message',async message => {
+if(message.author.bot) return;
+if(message.channel.type === 'dm') return
+  if(message.author.bot) return;
+  if(message.channel.type === 'dm') return;
+  if(!text[message.author.id]) text[message.author.id] = {
+    xp: 1,
+    level: 1
+  };
+  text[message.author.id].xp += (+Math.floor(Math.random() * 8) + 1);
+  if(text[message.author.id].xp >= 300) {
+    text[message.author.id] = {
+      xp: 1,
+      level: text[message.author.id].level + 1
+    };
+  }
+ 
+  fs.writeFile('./TextAndVoice/textState.json', JSON.stringify(text, null, 4), (e) => {
+    if(e) console.log(e);
+  });
+});
+ 
+hero.on('message',async message => {
+if(message.author.bot) return;
+if(message.channel.type === 'dm') return
+if(message.content.startsWith(prefix + "id")) {
+    if(message.author.bot) return;
+    if(message.channel.type === 'dm') return;
+    if(!voice[message.author.id]) voice[message.author.id] = {
+      xp: 1,
+      level: 1
+    };
+    fs.writeFile('./TextAndVoice/voiceState.json', JSON.stringify(voice, null, 4), (e) => {
+      if(e) return message.channel.send('**[ ERR303 ] . **' + e);
+    });
+      message.guild.fetchInvites().then(invs => {
+    let user = message.author;
+    let personalInvites = invs.filter(i => i.inviter.id === user.id);
+    let inviteCount = personalInvites.reduce((p, v) => v.uses + p, 0);
+    const millis = new Date().getTime() - message.author.createdAt.getTime();
+    const noww = new Date();
+    dateFormat(noww, 'dddd, mmmm dS, yyyy, h:MM:ss TT');
+    const created = millis / 1000 / 60 / 60 / 24;
+    const milliss = new Date().getTime() - message.guild.member(message.author).joinedAt.getTime();
+    const nows = new Date();
+    dateFormat(nows, 'dddd, mmmm dS, yyyy, h:MM:ss TT');
+    const joined = milliss / 1000 / 60 / 60 / 24;
+    let embed = new Discord.RichEmbed()
+    .setAuthor(message.author.username, message.author.avatarURL)
+    .setColor('#36393e')
+    .setThumbnail(message.author.avatarURL)
+    .addField('» مستوى كتابي', text[message.author.id].level,true)
+    .addField('» مستوى صوتي', voice[message.author.id].level,true)
+    .addField('» نقاط كتابي',text[message.author.id].xp,true)
+    .addField('» نقاط الصوت',voice[message.author.id].xp,true)
+    .addField('» مضى على دخولك الدسكورد', `${created.toFixed(0)} يومّا`,true)
+    .addField('» مضى على دخولك السيرفر', `${joined.toFixed(0)} يومّا`,true)
+    .addField('» دعوات',inviteCount,true)
+    .setFooter('FlightBot | 0.1');
+ 
+    message.channel.send(embed);
+  });
+  }
 });
 client.on('message', message => {
   if(message.author.bot) return;
